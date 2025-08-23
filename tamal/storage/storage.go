@@ -20,6 +20,7 @@ type Collection struct {
 	CollectionID  int       `db:"collection_id"`
 	AccountType   string    `db:"account_type"`
 	AccountNumber string    `db:"account_Number"`
+	Sender        string    `db:"sender"`
 	Date          time.Time `db:"date"`
 	Amount        int       `db:"amount"`
 	CRUDTimeDate
@@ -40,5 +41,6 @@ type Filter struct {
 	Limit      int32
 	Count      int
 	SortBy     string
+	Order      string
 	SearchTerm string
 }

@@ -12,8 +12,7 @@ import (
 )
 
 func Migrate() error {
-	configPath := flag.String("config", "env/config", "config file")
-	fmt.Println(*configPath)
+	configPath := flag.String("config", "env/config.yaml", "config file")
 	flag.Usage = usage
 	flag.Parse()
 	args := flag.Args()
@@ -25,7 +24,7 @@ func Migrate() error {
 	)
 
 	config.SetConfigFile(*configPath)
-	config.SetConfigType("ini")
+	config.SetConfigType("yaml")
 	config.AutomaticEnv()
 	if err := config.ReadInConfig(); err != nil {
 		log.Fatalf("Error loading configuration: %v", err)

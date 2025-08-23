@@ -1,0 +1,54 @@
+syntax="proto3";
+
+package users;
+
+option go_package="./proto/users";
+
+message User {
+    string UserID = 1;
+    string Name = 2;
+    int32 Batch = 3;
+    string Email = 4;
+    string Password = 5;
+}
+
+message GetTodoRequest {
+    int64 ID = 1;
+}
+
+message GetTodoResponse {
+    int64 ID = 1;
+    string Title = 2;
+    string Description = 3;
+}
+
+message GetTodosRequest {}
+
+message SaveTodoRequest {
+    Todo todo = 1;
+}
+
+message Todo {
+    int64 ID = 1;
+    string Title = 2;
+    string Description = 3;
+}
+
+message SaveTodoResponse {
+    string Body = 1;
+}
+
+message TodoRequest {
+    int64 ID = 1;
+}
+
+message TodoResponse {
+    Todo todo = 1;
+}
+
+service TodoService {
+    rpc GetTodo(GetTodoRequest) returns(GetTodoResponse) {}
+    rpc GetTodos(GetTodosRequest) returns(stream GetTodoResponse) {}
+    rpc SaveTodos(stream SaveTodoRequest) returns (SaveTodoResponse) {}
+    rpc BiDirectionalTodos(stream TodoRequest) returns (stream TodoResponse) {}
+}

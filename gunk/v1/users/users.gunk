@@ -1,0 +1,69 @@
+package users
+
+import (
+	"time"
+)
+
+type User struct {
+	UserID    string    `pb:"1" json:"user_id"`
+	Name      string    `pb:"2" json:"name"`
+	Batch     int       `pb:"3" json:"batch"`
+	Email     string    `pb:"4" json:"email"`
+	Password  string    `pb:"5" json:"password"`
+	CreatedAt time.Time `pb:"6" json:"created_at"`
+	CreatedBy string    `pb:"7" json:"created_by"`
+	UpdatedAt time.Time `pb:"8" json:"updated_at"`
+	UpdatedBy string    `pb:"9" json:"updated_by"`
+	DeleteAt  time.Time `pb:"10" json:"deleted_at"`
+	DeletedBy string    `pb:"11" json:"deleted_by"`
+}
+
+type CreateUserRequest struct {
+	User User `pb:"1" json:"user"`
+}
+
+type CreateUserResponse struct {
+	UserID string `pb:"1" json:"user_id"`
+}
+
+type UpdateUserRequest struct {
+	User User `pb:"1" json:"user"`
+}
+
+type UpdateUserResponse struct {
+	User User `pb:"1" json:"user"`
+}
+
+type GetUserRequest struct {
+	User User `pb:"1" json:"user"`
+}
+
+type GetUserResponse struct {
+	User User `pb:"1" json:"user"`
+}
+
+type ListUserRequest struct {
+	SortBy     string `pb:"1" json:"sort_by"`
+	SearchTerm string `pb:"2" json:"search_term"`
+	Limit      int32  `pb:"3" json:"limit"`
+	Offset     int32  `pb:"4" json:"offset"`
+}
+
+type ListUserResponse struct {
+	User  []User `pb:"1" json:"user"`
+	Total int32  `pb:"2" json:"total"`
+}
+
+type DeleteLeaveTypesRequest struct {
+	User User `pb:"1" json:"user"`
+}
+
+type DeleteLeaveTypesResponse struct{}
+
+type UserService interface {
+	CreateUser(CreateUserRequest) CreateUserResponse
+	UpdateUser(UpdateUserRequest) UpdateUserResponse
+	ListUser(ListUserRequest) ListUserResponse
+	GetUser(GetUserRequest) GetUserResponse
+	DeleteUser(DeleteUserRequest) DeleteUserResponse
+}
