@@ -1,0 +1,21 @@
+Protocol Buffer Compiler Installation: https://protobuf.dev/installation/
+```
+PB_REL="https://github.com/protocolbuffers/protobuf/releases"
+curl -LO $PB_REL/download/v32.0/protoc-32.0-osx-x86_64.zip
+```
+```
+unzip protoc-32.0-osx-x86_64.zip -d $HOME/.local
+```
+Update environment’s path variable to include the path to the protoc executable. PATH="$PATH:$HOME/.local/bin"
+```
+open ~/.zshrc
+source ~/.zshrc
+```
+To install protocol buffers add-in:
+```
+go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+```
+To generate the pb.go file:
+```
+protoc -I=./proto/users --go_out=. ./proto/users/users.proto 
+```
