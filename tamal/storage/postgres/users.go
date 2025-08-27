@@ -68,7 +68,6 @@ WHERE
 func (s *Storage) DeleteUser(ctx context.Context, user storage.User) error {
 	_, err := s.db.Exec(deleteUser, user.DeletedBy, user.UserID)
 	if err != nil {
-		fmt.Errorf("Error while deleting user: %w", err)
 		return err
 	}
 	return nil
@@ -82,6 +81,7 @@ SET
     batch = :batch,
 	email = :email,
 	password = :password,
+	updated_at = now(),
 	updated_by = :updated_by
 WHERE 
 	id = :id
@@ -105,7 +105,7 @@ func (s *Storage) UpdateUser(ctx context.Context, user storage.User) (*storage.U
 }
 
 const listUser = `
-WITH cnt AS (select count(*) as count FROM users WHERE deleted_at IS NULL AND name ILIKE '%%' || '$1' || '%%') SELECT user_id, name, batch, email, created_at, created_by, updated_at,updated_by, cnt.count FROM userss left join cnt on true WHERE deleted_at IS NULL AND name ILIKE '%%' || '$1' || '%%' ORDER BY $2 $3 LIMIT NULLIF($4, 0) OFFSET $5";
+SELECT * FROM users WHERE deleted_at IS NULL AND name ILIKE '%%' || '$1' || '%%' ORDER BY $2 $3 LIMIT NULLIF($4, 0) OFFSET $5";
 `
 
 func (s *Storage) ListUser(ctx context.Context, f storage.Filter) ([]storage.User, error) {
@@ -118,4 +118,20 @@ func (s *Storage) ListUser(ctx context.Context, f storage.Filter) ([]storage.Use
 	}
 
 	return users, nil
+}
+
+const userStat = `
+SELECT COUNT(*), sum(amount) FROM users where deleted_at IS NULL AND name ILIKE '%%' || '$1' || '%%';
+`
+
+func (s *Storage) UserStats(ctx context.Context, f storage.Filter) (storage.Stats, error) {
+	var stat storage.Stats
+	if err := s.db.Select(&stat, userStat, f.SearchTerm); err != nil {
+		if err == sql.ErrNoRows {
+			return storage.Stats{}, err
+		}
+		return storage.Stats{}, err
+	}
+
+	return stat, nil
 }

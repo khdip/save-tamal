@@ -8,23 +8,21 @@ import (
 type User struct {
 	UserID          string `db:"user_id"`
 	Name            string `db:"name"`
-	Batch           int    `db:"batch"`
+	Batch           int32  `db:"batch"`
 	Email           string `db:"email"`
 	Password        string `db:"password"`
 	ConfirmPassword string
 	CRUDTimeDate
-	Filter
 }
 
 type Collection struct {
-	CollectionID  int       `db:"collection_id"`
+	CollectionID  int32     `db:"collection_id"`
 	AccountType   string    `db:"account_type"`
 	AccountNumber string    `db:"account_Number"`
 	Sender        string    `db:"sender"`
 	Date          time.Time `db:"date"`
-	Amount        int       `db:"amount"`
+	Amount        int32     `db:"amount"`
 	CRUDTimeDate
-	Filter
 }
 
 type CRUDTimeDate struct {
@@ -39,8 +37,12 @@ type CRUDTimeDate struct {
 type Filter struct {
 	Offset     int32
 	Limit      int32
-	Count      int
 	SortBy     string
 	Order      string
 	SearchTerm string
+}
+
+type Stats struct {
+	Count       int32
+	TotalAmount int32
 }

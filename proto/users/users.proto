@@ -2,6 +2,8 @@ syntax="proto3";
 
 package users;
 
+import "google/protobuf/timestamp.proto";
+
 option go_package="./proto/users";
 
 message User {
@@ -10,16 +12,78 @@ message User {
     int32 Batch = 3;
     string Email = 4;
     string Password = 5;
+    google.protobuf.Timestamp CreatedAt = 6;
+    string CreatedBy = 7;
+    google.protobuf.Timestamp UpdatedAt = 8;
+    string UpdatedBy = 9;
+    google.protobuf.Timestamp DeletedAt = 10;
+    string DeletedBy = 11;
+}
+
+message Filter {
+    int32 Offset = 1;
+    int32 Limit = 2;
+    string SortBy = 3;
+    string Order = 4;
+    string SearchTerm = 5;
+}
+
+message Stats {
+    int32 Count = 1;
+    int32 TotalAmount = 2;
+}
+
+message CreateUserRequest {
+    User user = 1;
+}
+
+message CreateUserResponse {
+    string UserID = 1;
 }
 
 message GetUserRequest {
-    int64 ID = 1;
+    User user = 1;
 }
 
 message GetUserResponse {
     User user = 1;
 }
 
-service TodoService {
+message UpdateUserRequest {
+    User user = 1;
+}
+
+message UpdateUserResponse {
+    User user = 1;
+}
+
+message DeleteUserRequest {
+    User user = 1;
+}
+
+message DeleteUserResponse {}
+
+message ListUserRequest {
+    Filter filter = 1;
+}
+
+message ListUserResponse {
+   repeated User user = 1;
+}
+
+message UserStatsRequest {
+    Filter filter = 1;
+}
+
+message UserStatsResponse {
+    Stats stats = 1;
+}
+
+service UserService {
+    rpc CreateUser(CreateUserRequest) returns(CreateUserResponse) {}
     rpc GetUser(GetUserRequest) returns(GetUserResponse) {}
+    rpc UpdateUser(UpdateUserRequest) returns(UpdateUserResponse) {}
+    rpc DeleteUser(DeleteUserRequest) returns(DeleteUserResponse) {}
+    rpc ListUser(ListUserRequest) returns(ListUserResponse) {}
+    rpc UserStats(UserStatsRequest) returns(UserStatsResponse) {}
 }
