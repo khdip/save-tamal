@@ -11,7 +11,7 @@ import (
 )
 
 func (h *Handler) CreateUser(ctx context.Context, req *usergrpc.CreateUserRequest) (*usergrpc.CreateUserResponse, error) {
-	res, err := h.ust.CreateUesr(ctx, storage.User{
+	res, err := h.ust.CreateUser(ctx, storage.User{
 		UserID:   req.GetUser().UserID,
 		Name:     req.GetUser().Name,
 		Batch:    req.GetUser().Batch,

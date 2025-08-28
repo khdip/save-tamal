@@ -4,6 +4,10 @@ import (
 	"fmt"
 	"log"
 	"net"
+	usergrpc "save-tamal/proto/users"
+	usercore "save-tamal/tamal/core/users"
+	usersvc "save-tamal/tamal/services/users"
+
 	"save-tamal/tamal/storage/postgres"
 	"strconv"
 	"strings"
@@ -18,26 +22,22 @@ func main() {
 			strings.NewReplacer(".", "_"),
 		),
 	)
-	config.SetConfigFile("tamal/env/config")
-	config.SetConfigType("ini")
+	config.SetConfigFile("tamal/env/config.yaml")
+	config.SetConfigType("yaml")
 	config.AutomaticEnv()
 	if err := config.ReadInConfig(); err != nil {
 		log.Printf("Error loading configuration: %v", err)
 	}
 
 	grpcServer := grpc.NewServer()
-	// store, err := newDBFromConfig(config)
-	// if err != nil {
-	// 	log.Fatalf("Failed to connect to database: %s", err)
-	// }
+	store, err := newDBFromConfig(config)
+	if err != nil {
+		log.Fatalf("Failed to connect to database: %s", err)
+	}
 
-	// cps := pc.NewCorePostSvc(store)
-	// ps := post.NewPostServer(cps)
-	// ppb.RegisterPostServiceServer(grpcServer, ps)
-
-	// ccs := cc.NewCoreCategorySvc(store)
-	// cs := category.NewCategoryServer(ccs)
-	// cpb.RegisterCategoryServiceServer(grpcServer, cs)
+	userC := usercore.New(store)
+	userS := usersvc.New(userC)
+	usergrpc.RegisterUserServiceServer(grpcServer, userS)
 
 	host, port := config.GetString("server.host"), config.GetString("server.port")
 	lis, err := net.Listen("tcp", fmt.Sprintf("%s:%s", host, port))

@@ -10,7 +10,7 @@ import (
 )
 
 type UserStore interface {
-	CreateUesr(ctx context.Context, ust storage.User) (string, error)
+	CreateUser(ctx context.Context, ust storage.User) (string, error)
 	GetUser(ctx context.Context, ust storage.User) (*storage.User, error)
 	UpdateUser(ctx context.Context, ust storage.User) (*storage.User, error)
 	DeleteUser(ctx context.Context, ust storage.User) error

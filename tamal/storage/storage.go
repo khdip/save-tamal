@@ -6,12 +6,11 @@ import (
 )
 
 type User struct {
-	UserID          string `db:"user_id"`
-	Name            string `db:"name"`
-	Batch           int32  `db:"batch"`
-	Email           string `db:"email"`
-	Password        string `db:"password"`
-	ConfirmPassword string
+	UserID   string `db:"user_id"`
+	Name     string `db:"name"`
+	Batch    int32  `db:"batch"`
+	Email    string `db:"email"`
+	Password string `db:"password"`
 	CRUDTimeDate
 }
 

@@ -8,7 +8,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (s *CoreSvc) UesrStats(ctx context.Context, filter storage.Filter) (storage.Stats, error) {
+func (s *CoreSvc) UserStats(ctx context.Context, filter storage.Filter) (storage.Stats, error) {
 	userStats, err := s.st.UserStats(ctx, filter)
 	if err != nil {
 		return storage.Stats{}, status.Error(codes.Internal, "processing failed")

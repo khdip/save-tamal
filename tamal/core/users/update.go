@@ -8,13 +8,13 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (s *CoreSvc) UpdateUser(ctx context.Context, user storage.User) (storage.User, error) {
+func (s *CoreSvc) UpdateUser(ctx context.Context, user storage.User) (*storage.User, error) {
 	u, err := s.st.UpdateUser(ctx, user)
 	if err != nil {
-		return storage.User{}, status.Error(codes.Internal, "processing failed")
+		return nil, status.Error(codes.Internal, "processing failed")
 	}
 
-	return storage.User{
+	return &storage.User{
 		UserID:   u.UserID,
 		Name:     u.Name,
 		Batch:    u.Batch,
