@@ -23,7 +23,7 @@ INSERT INTO users (
 	:created_by,
 	:updated_by
 ) RETURNING
-	id;
+	user_id;
 `
 
 func (s *Storage) CreateUser(ctx context.Context, user storage.User) (string, error) {
@@ -43,7 +43,7 @@ func (s *Storage) CreateUser(ctx context.Context, user storage.User) (string, er
 const getUser = `
 SELECT *
 FROM users
-WHERE (id = $1 OR email = $2) AND deleted_at IS NULL; 
+WHERE (user_id = $1 OR email = $2) AND deleted_at IS NULL; 
 `
 
 func (s *Storage) GetUser(ctx context.Context, user storage.User) (*storage.User, error) {
@@ -61,7 +61,7 @@ SET
 	deleted_at = now(),
 	deleted_by = $1
 WHERE 
-	id = $2;
+	user_id = $2;
 
 `
 
@@ -84,7 +84,7 @@ SET
 	updated_at = now(),
 	updated_by = :updated_by
 WHERE 
-	id = :id
+	user_id = :user_id
 RETURNING 
 	updated_at;
 `
@@ -121,7 +121,7 @@ func (s *Storage) ListUser(ctx context.Context, f storage.Filter) ([]storage.Use
 }
 
 const userStat = `
-SELECT COUNT(*), sum(amount) FROM users where deleted_at IS NULL AND name ILIKE '%%' || '$1' || '%%';
+SELECT COUNT(*) FROM users where deleted_at IS NULL AND name ILIKE '%%' || '$1' || '%%';
 `
 
 func (s *Storage) UserStats(ctx context.Context, f storage.Filter) (storage.Stats, error) {

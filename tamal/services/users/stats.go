@@ -10,8 +10,8 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (h *Handler) UserStats(ctx context.Context, req *usergrpc.UserStatsRequest) (*usergrpc.UserStatsResponse, error) {
-	r, err := h.ust.UserStats(ctx, storage.Filter{
+func (s *Svc) UserStats(ctx context.Context, req *usergrpc.UserStatsRequest) (*usergrpc.UserStatsResponse, error) {
+	r, err := s.ust.UserStats(ctx, storage.Filter{
 		SearchTerm: req.Filter.SearchTerm,
 	})
 	if err != nil {

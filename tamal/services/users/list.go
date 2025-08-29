@@ -11,7 +11,7 @@ import (
 	tspb "google.golang.org/protobuf/types/known/timestamppb"
 )
 
-func (s *Handler) ListUser(ctx context.Context, req *usergrpc.ListUserRequest) (*usergrpc.ListUserResponse, error) {
+func (s *Svc) ListUser(ctx context.Context, req *usergrpc.ListUserRequest) (*usergrpc.ListUserResponse, error) {
 	users, err := s.ust.ListUser(ctx, storage.Filter{
 		Offset:     req.Filter.Offset,
 		Limit:      req.Filter.Limit,

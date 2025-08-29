@@ -11,8 +11,8 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-func (h *Handler) GetUser(ctx context.Context, req *usergrpc.GetUserRequest) (*usergrpc.GetUserResponse, error) {
-	r, err := h.ust.GetUser(ctx, storage.User{
+func (s *Svc) GetUser(ctx context.Context, req *usergrpc.GetUserRequest) (*usergrpc.GetUserResponse, error) {
+	r, err := s.ust.GetUser(ctx, storage.User{
 		UserID: req.GetUser().UserID,
 		Email:  req.GetUser().Email,
 	})

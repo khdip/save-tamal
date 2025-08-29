@@ -10,7 +10,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (s *Handler) UpdateUser(ctx context.Context, req *usergrpc.UpdateUserRequest) (*usergrpc.UpdateUserResponse, error) {
+func (s *Svc) UpdateUser(ctx context.Context, req *usergrpc.UpdateUserRequest) (*usergrpc.UpdateUserResponse, error) {
 	res, err := s.ust.UpdateUser(ctx, storage.User{
 		UserID:   req.GetUser().UserID,
 		Name:     req.GetUser().Name,

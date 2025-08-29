@@ -8,6 +8,7 @@ import (
 
 	usergrpc "save-tamal/proto/users"
 
+	"github.com/gorilla/mux"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -29,11 +30,13 @@ type UserTemplateData struct {
 	User       User
 	List       []User
 	Paginator  paginator.Paginator
-	SearchTerm string
+	FilterData Filter
+	URLs       map[string]string
+	Message    map[string]string
 }
 
 func (h *Handler) createUser(w http.ResponseWriter, r *http.Request) {
-	h.loadCreateForm(w, User{})
+	h.loadUserCreateForm(w, User{})
 }
 
 func (h *Handler) storeUser(w http.ResponseWriter, r *http.Request) {
@@ -72,9 +75,148 @@ func (h *Handler) storeUser(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, userListPath, http.StatusTemporaryRedirect)
 }
 
-func (h *Handler) loadCreateForm(w http.ResponseWriter, usr User) {
+func (h *Handler) editUser(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	id := params["user_id"]
+	res, err := h.uc.GetUser(r.Context(), &usergrpc.GetUserRequest{
+		User: &usergrpc.User{
+			UserID: id,
+		},
+	})
+	if err != nil {
+		log.Println("unable to get user info: ", err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	h.loadUserEditForm(w, User{
+		UserID: res.User.UserID,
+		Name:   res.User.Name,
+		Batch:  res.User.Batch,
+		Email:  res.User.Email,
+	})
+}
+
+func (h *Handler) updateUser(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	params := mux.Vars(r)
+	id := params["user_id"]
+	if err := r.ParseForm(); err != nil {
+		errMsg := "parsing form"
+		http.Error(w, errMsg, http.StatusBadRequest)
+		return
+	}
+
+	var usr User
+	if err := h.decoder.Decode(&usr, r.PostForm); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	if _, err := h.uc.UpdateUser(ctx, &usergrpc.UpdateUserRequest{
+		User: &usergrpc.User{
+			UserID:    id,
+			Name:      usr.Name,
+			Batch:     usr.Batch,
+			Email:     usr.Email,
+			Password:  usr.Password,
+			UpdatedBy: "",
+		},
+	}); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	http.Redirect(w, r, userListPath, http.StatusSeeOther)
+}
+
+func (h *Handler) listUser(w http.ResponseWriter, r *http.Request) {
+	template := h.templates.Lookup("user-list.html")
+	if template == nil {
+		errMsg := "unable to load template"
+		http.Error(w, errMsg, http.StatusInternalServerError)
+		return
+	}
+
+	err := r.ParseForm()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	filterData := Filter{
+		SearchTerm: r.FormValue("SearchTerm"),
+		SortBy:     r.FormValue("SortBy"),
+		Order:      r.FormValue("Order"),
+	}
+	usrlst, err := h.uc.ListUser(r.Context(), &usergrpc.ListUserRequest{
+		Filter: &usergrpc.Filter{
+			Offset:     filterData.Offset,
+			Limit:      limitPerPage,
+			SortBy:     filterData.SortBy,
+			Order:      filterData.Order,
+			SearchTerm: filterData.SearchTerm,
+		},
+	})
+	if err != nil {
+		log.Println("unable to get list: ", err)
+		http.Redirect(w, r, notFoundPath, http.StatusSeeOther)
+	}
+
+	userList := make([]User, 0, len(usrlst.GetUser()))
+	for _, item := range usrlst.GetUser() {
+		usrData := User{
+			UserID:    item.UserID,
+			Name:      item.Name,
+			Batch:     item.Batch,
+			Email:     item.Email,
+			CreatedAt: item.CreatedAt.AsTime(),
+			CreatedBy: item.CreatedBy,
+			UpdatedAt: item.UpdatedAt.AsTime(),
+			UpdatedBy: item.UpdatedBy,
+		}
+		userList = append(userList, usrData)
+	}
+
+	userstat, err := h.uc.UserStats(r.Context(), &usergrpc.UserStatsRequest{
+		Filter: &usergrpc.Filter{
+			Offset:     filterData.Offset,
+			Limit:      limitPerPage,
+			SortBy:     filterData.SortBy,
+			Order:      filterData.Order,
+			SearchTerm: filterData.SearchTerm,
+		},
+	})
+	if err != nil {
+		log.Println("unable to get stats: ", err)
+		http.Redirect(w, r, notFoundPath, http.StatusSeeOther)
+	}
+
+	msg := map[string]string{}
+	if filterData.SearchTerm != "" && len(usrlst.GetUser()) > 0 {
+		msg = map[string]string{"FoundMessage": "Data Found"}
+	} else if filterData.SearchTerm != "" && len(usrlst.GetUser()) == 0 {
+		msg = map[string]string{"NotFoundMessage": "Data Not Found"}
+	}
+	data := UserTemplateData{
+		FilterData: filterData,
+		List:       userList,
+		Message:    msg,
+		URLs:       listOfURLs(),
+	}
+	if len(userList) > 0 {
+		data.Paginator = paginator.NewPaginator(int32(filterData.CurrentPage), limitPerPage, userstat.Stats.Count, r)
+	}
+
+	if err := template.Execute(w, data); err != nil {
+		log.Printf("error with template execution: %+v", err)
+		http.Redirect(w, r, notFoundPath, http.StatusSeeOther)
+	}
+}
+
+func (h *Handler) loadUserCreateForm(w http.ResponseWriter, usr User) {
 	form := UserTemplateData{
 		User: usr,
+		URLs: listOfURLs(),
 	}
 
 	err := h.templates.ExecuteTemplate(w, "user-create.html", form)
@@ -84,9 +226,10 @@ func (h *Handler) loadCreateForm(w http.ResponseWriter, usr User) {
 	}
 }
 
-func (h *Handler) loadEditForm(w http.ResponseWriter, usr User) {
+func (h *Handler) loadUserEditForm(w http.ResponseWriter, usr User) {
 	form := UserTemplateData{
 		User: usr,
+		URLs: listOfURLs(),
 	}
 
 	err := h.templates.ExecuteTemplate(w, "user-edit.html", form)

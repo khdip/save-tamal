@@ -8,7 +8,7 @@ import (
 	"save-tamal/tamal/storage"
 )
 
-func (s *Handler) DeleteUser(ctx context.Context, req *usergrpc.DeleteUserRequest) (*usergrpc.DeleteUserResponse, error) {
+func (s *Svc) DeleteUser(ctx context.Context, req *usergrpc.DeleteUserRequest) (*usergrpc.DeleteUserResponse, error) {
 	if err := s.ust.DeleteUser(ctx, storage.User{
 		UserID: req.GetUser().UserID,
 		CRUDTimeDate: storage.CRUDTimeDate{

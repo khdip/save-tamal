@@ -10,8 +10,8 @@ import (
 	"save-tamal/tamal/storage"
 )
 
-func (h *Handler) CreateUser(ctx context.Context, req *usergrpc.CreateUserRequest) (*usergrpc.CreateUserResponse, error) {
-	res, err := h.ust.CreateUser(ctx, storage.User{
+func (s *Svc) CreateUser(ctx context.Context, req *usergrpc.CreateUserRequest) (*usergrpc.CreateUserResponse, error) {
+	res, err := s.ust.CreateUser(ctx, storage.User{
 		UserID:   req.GetUser().UserID,
 		Name:     req.GetUser().Name,
 		Batch:    req.GetUser().Batch,

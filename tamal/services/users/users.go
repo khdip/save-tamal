@@ -18,19 +18,19 @@ type UserStore interface {
 	UserStats(ctx context.Context, flt storage.Filter) (storage.Stats, error)
 }
 
-type Handler struct {
+type Svc struct {
 	usergrpc.UnimplementedUserServiceServer
 	ust UserStore
 }
 
-func New(cs UserStore) *Handler {
-	return &Handler{
+func New(cs UserStore) *Svc {
+	return &Svc{
 		ust: cs,
 	}
 }
 
 // RegisterService with grpc server.
-func (h *Handler) RegisterSvc(srv *grpc.Server) error {
-	usergrpc.RegisterUserServiceServer(srv, h)
+func (s *Svc) RegisterSvc(srv *grpc.Server) error {
+	usergrpc.RegisterUserServiceServer(srv, s)
 	return nil
 }
