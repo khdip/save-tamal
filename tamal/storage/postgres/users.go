@@ -105,7 +105,7 @@ func (s *Storage) UpdateUser(ctx context.Context, user storage.User) (*storage.U
 }
 
 const listUser = `
-SELECT * FROM users WHERE deleted_at IS NULL AND name ILIKE '%%' || '$1' || '%%' ORDER BY $2 $3 LIMIT NULLIF($4, 0) OFFSET $5";
+SELECT * FROM users WHERE deleted_at IS NULL AND name ILIKE '%%' || $1 || '%%' ORDER BY $2 $3 LIMIT NULLIF($4, 0) OFFSET $5;
 `
 
 func (s *Storage) ListUser(ctx context.Context, f storage.Filter) ([]storage.User, error) {
