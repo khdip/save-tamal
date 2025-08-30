@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="/assets/css/style.css" rel="stylesheet" type="text/css">
-    <title>Create User</title>
+    <title>User Details</title>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-success">
@@ -36,29 +36,21 @@
         </div>
     </nav> 
     <div class="container-fluid">
-        <h2 class="p-2 text-center">Create a user</h2>
+        <h2 class="p-2 text-center">User Details</h2>
         <div class="row p-2">
             <div class="col-md-6">
-                <form method="post" action="{{.URLs.userStore}}">
-                    <div class="mb-3">
-                        <label class="form-label">Name*</label>
-                        <input type="text" class="form-control" name="name" placeholder="Enter user's name" required>
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-text"><span class="fw-bold">Name: </span>{{.User.Name}}</p>
+                        <p class="card-text"><span class="fw-bold">Batch: </span>{{.User.Batch}}</p>
+                        <p class="card-text"><span class="fw-bold">Email: </span>{{.User.Email}}</p>
+                        <p class="card-text"><span class="fw-bold">Created At: </span>{{.User.CreatedAt}}</p>
+                        <p class="card-text"><span class="fw-bold">Created By: </span>{{.User.CreatedBy}}</p>
+                        <p class="card-text"><span class="fw-bold">Updated At: </span>{{.User.UpdatedAt}}</p>
+                        <p class="card-text"><span class="fw-bold">Updated By: </span>{{.User.UpdatedBy}}</p>
+                        <a href="{{.URLs.userList}}" class="btn btn-primary">Back to List</a>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Batch</label>
-                        <input type="number" class="form-control" name="batch" placeholder="Enter user's batch">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Email address*</label>
-                        <input type="email" class="form-control" name="email" placeholder="Enter user's email" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Password*</label>
-                        <input type="password" class="form-control" name="password" placeholder="Enter a password" required>
-                    </div>
-                    <a class="btn btn-primary" href="{{.URLs.userList}}">Back to List</a>
-                    <button type="submit" class="btn btn-success float-end">Create</button>
-                </form>
+                </div>
             </div>
         </div>
     </div>

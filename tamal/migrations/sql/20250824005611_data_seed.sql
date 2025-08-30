@@ -6,5 +6,5 @@ VALUES ('ffb541de-a833-4d8d-99c9-4ec229b55716', 'dip', 15, 'khdip.ku@gmail.com',
 
 -- +goose Down
 -- +goose StatementBegin
-
+DELETE FROM users WHERE user_id = 'ffb541de-a833-4d8d-99c9-4ec229b55716';
 -- +goose StatementEnd

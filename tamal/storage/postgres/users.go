@@ -104,13 +104,26 @@ func (s *Storage) UpdateUser(ctx context.Context, user storage.User) (*storage.U
 	return &user, nil
 }
 
-const listUser = `
-SELECT * FROM users WHERE deleted_at IS NULL AND name ILIKE '%%' || $1 || '%%' ORDER BY $2 $3 LIMIT NULLIF($4, 0) OFFSET $5;
-`
-
 func (s *Storage) ListUser(ctx context.Context, f storage.Filter) ([]storage.User, error) {
 	var users []storage.User
-	if err := s.db.Select(&users, listUser, f.SearchTerm, f.SortBy, f.Order, f.Limit, f.Offset); err != nil {
+	order := "DESC"
+	sortBy := "created_at"
+
+	if f.SortBy != "" {
+		order = f.Order
+	}
+	if f.SortBy != "" {
+		sortBy = f.SortBy
+	}
+
+	limit := ""
+	if f.Limit > 0 {
+		limit = fmt.Sprintf(" LIMIT NULLIF(%d, 0) OFFSET %d;", f.Limit, f.Offset)
+	}
+
+	listUser := fmt.Sprintf("SELECT * FROM users WHERE deleted_at IS NULL AND name ILIKE '%%' || '%s' || '%%' ORDER BY %s %s", f.SearchTerm, sortBy, order)
+	fullQuery := listUser + limit
+	if err := s.db.Select(&users, fullQuery); err != nil {
 		if err == sql.ErrNoRows {
 			return nil, err
 		}
@@ -120,13 +133,10 @@ func (s *Storage) ListUser(ctx context.Context, f storage.Filter) ([]storage.Use
 	return users, nil
 }
 
-const userStat = `
-SELECT COUNT(*) FROM users where deleted_at IS NULL AND name ILIKE '%%' || '$1' || '%%';
-`
-
 func (s *Storage) UserStats(ctx context.Context, f storage.Filter) (storage.Stats, error) {
+	var userStat = fmt.Sprintf("SELECT COUNT(*) FROM users where deleted_at IS NULL AND name ILIKE '%%' || '%s' || '%%';", f.SearchTerm)
 	var stat storage.Stats
-	if err := s.db.Select(&stat, userStat, f.SearchTerm); err != nil {
+	if err := s.db.Get(&stat, userStat); err != nil {
 		if err == sql.ErrNoRows {
 			return storage.Stats{}, err
 		}

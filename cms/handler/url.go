@@ -1,16 +1,23 @@
 package handler
 
 const (
-	homePath       = "/"
-	notFoundPath   = "/404"
-	dashboardPath  = "/dashboard"
-	userListPath   = "/users"
-	userCreatePath = "/users/create"
-	userStorePath  = "/users/store"
-	userEditPath   = "/users/edit/{user_id}"
-	userUpdatePath = "/users/update/{user_id}"
-	deleteUserPath = "users/delete/{user_id}"
-	viewUserPath   = "/users/view/{user_id}"
+	homePath             = "/"
+	notFoundPath         = "/404"
+	dashboardPath        = "/dashboard"
+	userListPath         = "/users"
+	userCreatePath       = "/users/create"
+	userStorePath        = "/users/store"
+	userEditPath         = "/users/edit/{user_id}"
+	userUpdatePath       = "/users/update/{user_id}"
+	userDeletePath       = "/users/delete/{user_id}"
+	userViewPath         = "/users/view/{user_id}"
+	collectionListPath   = "/collection"
+	collectionCreatePath = "/collection/create"
+	collectionStorePath  = "/collection/store"
+	collectionEditPath   = "/collection/edit/{collection_id}"
+	collectionUpdatePath = "/collection/update/{collection_id}"
+	collectionDeletePath = "/collection/delete/{collection_id}"
+	collectionViewPath   = "/collection/view/{collection_id}"
 )
 
 func listOfURLs() map[string]string {
@@ -22,7 +29,14 @@ func listOfURLs() map[string]string {
 		"userStore":  userStorePath,
 		"userEdit":   userEditPath,
 		"userUpdate": userUpdatePath,
-		"userDelete": deleteUserPath,
-		"userView":   viewUserPath,
+		"userDelete": userDeletePath,
+		"userView":   userViewPath,
+		"collList":   collectionListPath,
+		"collCreate": collectionCreatePath,
+		"collStore":  collectionStorePath,
+		"collEdit":   collectionEditPath,
+		"collUpdate": collectionUpdatePath,
+		"collDelete": collectionDeletePath,
+		"collView":   collectionViewPath,
 	}
 }

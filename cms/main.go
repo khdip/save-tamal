@@ -17,6 +17,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 
+	collgrpc "save-tamal/proto/collection"
 	usergrpc "save-tamal/proto/users"
 )
 
@@ -54,8 +55,9 @@ func main() {
 	}
 	asst := afero.NewIOFS(afero.NewBasePathFs(afero.NewOsFs(), assetPath))
 
-	tc := usergrpc.NewUserServiceClient(conn)
-	r := handler.GetHandler(decoder, store, asst, tc)
+	uc := usergrpc.NewUserServiceClient(conn)
+	cc := collgrpc.NewCollectionServiceClient(conn)
+	r := handler.GetHandler(decoder, store, asst, uc, cc)
 
 	host, port := config.GetString("server.host"), config.GetString("server.port")
 	log.Println("Server  starting...")

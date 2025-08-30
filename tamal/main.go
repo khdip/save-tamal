@@ -4,9 +4,14 @@ import (
 	"fmt"
 	"log"
 	"net"
+
 	usergrpc "save-tamal/proto/users"
 	usercore "save-tamal/tamal/core/users"
 	usersvc "save-tamal/tamal/services/users"
+
+	collgrpc "save-tamal/proto/collection"
+	collcore "save-tamal/tamal/core/collection"
+	collsvc "save-tamal/tamal/services/collection"
 
 	"save-tamal/tamal/storage/postgres"
 	"strconv"
@@ -38,6 +43,10 @@ func main() {
 	userC := usercore.New(store)
 	userS := usersvc.New(userC)
 	usergrpc.RegisterUserServiceServer(grpcServer, userS)
+
+	collC := collcore.New(store)
+	collS := collsvc.New(collC)
+	collgrpc.RegisterCollectionServiceServer(grpcServer, collS)
 
 	host, port := config.GetString("server.host"), config.GetString("server.port")
 	lis, err := net.Listen("tcp", fmt.Sprintf("%s:%s", host, port))

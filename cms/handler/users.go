@@ -113,13 +113,18 @@ func (h *Handler) updateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	passByte, err := bcrypt.GenerateFromPassword([]byte(usr.Password), bcrypt.DefaultCost)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	if _, err := h.uc.UpdateUser(ctx, &usergrpc.UpdateUserRequest{
 		User: &usergrpc.User{
 			UserID:    id,
 			Name:      usr.Name,
 			Batch:     usr.Batch,
 			Email:     usr.Email,
-			Password:  usr.Password,
+			Password:  string(passByte),
 			UpdatedBy: "",
 		},
 	}); err != nil {
@@ -150,7 +155,7 @@ func (h *Handler) listUser(w http.ResponseWriter, r *http.Request) {
 	}
 	usrlst, err := h.uc.ListUser(r.Context(), &usergrpc.ListUserRequest{
 		Filter: &usergrpc.Filter{
-			Offset:     filterData.Offset,
+			Offset:     0,
 			Limit:      limitPerPage,
 			SortBy:     filterData.SortBy,
 			Order:      filterData.Order,
@@ -213,6 +218,64 @@ func (h *Handler) listUser(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func (h *Handler) viewUser(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	id := params["user_id"]
+	res, err := h.uc.GetUser(r.Context(), &usergrpc.GetUserRequest{
+		User: &usergrpc.User{
+			UserID: id,
+		},
+	})
+	if err != nil {
+		log.Println("unable to get user info: ", err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	data := UserTemplateData{
+		User: User{
+			UserID:    id,
+			Name:      res.User.Name,
+			Batch:     res.User.Batch,
+			Email:     res.User.Email,
+			CreatedAt: res.User.CreatedAt.AsTime(),
+			CreatedBy: res.User.CreatedBy,
+			UpdatedAt: res.User.UpdatedAt.AsTime(),
+			UpdatedBy: res.User.UpdatedBy,
+		},
+		URLs: listOfURLs(),
+	}
+
+	err = h.templates.ExecuteTemplate(w, "user-view.html", data)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+}
+
+func (h *Handler) deleteUser(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	if err := r.ParseForm(); err != nil {
+		errMsg := "parsing form"
+		http.Error(w, errMsg, http.StatusBadRequest)
+		return
+	}
+
+	params := mux.Vars(r)
+	id := params["user_id"]
+	if _, err := h.uc.DeleteUser(ctx, &usergrpc.DeleteUserRequest{
+		User: &usergrpc.User{
+			UserID:    id,
+			DeletedBy: "",
+		},
+	}); err != nil {
+		log.Println("unable to delete user: ", err)
+		http.Redirect(w, r, notFoundPath, http.StatusSeeOther)
+	}
+
+	http.Redirect(w, r, userListPath, http.StatusSeeOther)
+}
+
 func (h *Handler) loadUserCreateForm(w http.ResponseWriter, usr User) {
 	form := UserTemplateData{
 		User: usr,
@@ -237,4 +300,17 @@ func (h *Handler) loadUserEditForm(w http.ResponseWriter, usr User) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+}
+
+func (h *Handler) getName(w http.ResponseWriter, r *http.Request, userid string) string {
+	res, err := h.uc.GetUser(r.Context(), &usergrpc.GetUserRequest{
+		User: &usergrpc.User{
+			UserID: userid,
+		},
+	})
+	if err != nil {
+		log.Println("unable to get user info: ", err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+	return res.User.Name
 }
