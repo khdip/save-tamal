@@ -3,36 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="../css/bootstrap.min.css" rel="stylesheet" type="text/css">
-    <link href="../css/style.css" rel="stylesheet" type="text/css">
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="/assets/css/style.css" rel="stylesheet" type="text/css">
     <title>Save Tamal</title>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-            <a class="navbar-brand text-success fw-bold" href="#">Save Tamal</a>
+            <a class="navbar-brand text-success fw-bold" href="{{.URLs.home}}">Save Tamal</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item mx-lg-2">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                        <a class="nav-link active" aria-current="page" href="{{.URLs.home}}">Home</a>
                     </li>
                     <li class="nav-item mx-lg-2">
-                        <a class="nav-link" href="#about">About Tamal</a>
+                        <a class="nav-link" href="{{.URLs.home}}#about">About Tamal</a>
                     </li>
                     <li class="nav-item mx-lg-2">
-                        <a class="nav-link" href="#documents">Medical Documents</a>
+                        <a class="nav-link" href="{{.URLs.home}}#documents">Medical Documents</a>
                     </li>
                     <li class="nav-item mx-lg-2">
-                        <a class="nav-link" href="#collection">Collection Details</a>
+                        <a class="nav-link" href="{{.URLs.home}}#collection">Collection Details</a>
                     </li>
                     <li class="nav-item mx-lg-2">
-                        <a class="nav-link" href="#contact">Contact Us</a>
+                        <a class="nav-link" href="{{.URLs.home}}#contact">Contact Us</a>
                     </li>
                     <li class="nav-item ml-lg-2">
-                        <a class="btn btn-success" href="#donate">Donate</a>
+                        <a class="btn btn-success" href="{{.URLs.home}}#donate">Donate</a>
                     </li>
                 </ul>
             </div>
@@ -43,7 +43,7 @@
             <div class="col-md-7">
                 <h1><span class="bg-success text-light p-2 rounded-3">তমাল</span> বাঁচতে চায়</h1>
                 <p class="fs-5">খুলনা বিশ্ববিদ্যালয়ের ইলেক্ট্রনিক্স অ্যান্ড কমিউনিকেশন ইঞ্জিনিয়ারিং ডিসিপ্লিনের ‘১১ ব্যাচের ছাত্র মো. নাজমুল ইসলাম তমাল- দুরারোগ্য ব্লাড ক্যান্সারে আক্রান্ত! তমালের চিকিৎসার জন্য প্রায় ৯৮ লাখ টাকা প্রয়োজন যা এই মুহুর্তে তার পরিবারের পক্ষে বহন করা অসম্ভব। তাই তমালকে বাঁচাতে আপনাদের আর্থিক সহায়তা অত্যন্ত জরুরী।</p>
-                <button class="btn btn-outline-success btn-lg">Donate</button>
+                <a href="{{.URLs.home}}#donate" class="btn btn-outline-success btn-lg">Donate</a>
             </div>
         </div>
     </div>
@@ -64,10 +64,10 @@
         <div class="row">
             <h2 class="text-center text-success mb-4">MEDICAL DOCUMENTS</h2>
             <div class="col-12 col-lg-6">
-                <iframe src="../files/Case-Summary.pdf" frameborder="0" width="100%" height="600px"></iframe>
+                <iframe src="/assets/files/Case-Summary.pdf" frameborder="0" width="100%" height="600px"></iframe>
             </div>
             <div class="col-12 col-lg-6">
-                <iframe src="../files/Estimated-Cost.pdf" frameborder="0" width="100%" height="600px"></iframe>
+                <iframe src="/assets/files/Estimated-Cost.pdf" frameborder="0" width="100%" height="600px"></iframe>
             </div>
         </div>
     </div>
@@ -78,73 +78,21 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Name</th>
+                            <th>Date</th>
                             <th>Account Number</th>
                             <th>Account Type</th>
                             <th>Amount</th>
                         </tr>
                     </thead>
                     <tbody>
+                        {{range .List}}
                         <tr>
-                            <td>John Doe</td>
-                            <td>12345678900987</td>
-                            <td>Bank</td>
-                            <td>&#2547;20000</td>
+                            <td>{{.Date}}</td>
+                            <td>{{.AccountNumber}}</td>
+                            <td>{{.AccountType}}</td>
+                            <td>{{.Amount}} {{.Currency}}</td>
                         </tr>
-                        <tr>
-                            <td>Mitchell Smith</td>
-                            <td>01777999888</td>
-                            <td>Bkash</td>
-                            <td>&#2547;600</td>
-                        </tr>
-                        <tr>
-                            <td>Jacob Hunt</td>
-                            <td>01823456789</td>
-                            <td>Nagad</td>
-                            <td>&#2547;3000</td>
-                        </tr>
-                        <tr>
-                            <td>Shaun Lee</td>
-                            <td>01966723456789</td>
-                            <td>Bank</td>
-                            <td>&#2547;1550</td>
-                        </tr>
-                        <tr>
-                            <td>Larry Page</td>
-                            <td>01376980765</td>
-                            <td>Rocket</td>
-                            <td>&#2547;750</td>
-                        </tr>
-                        <tr>
-                            <td>Will Turner</td>
-                            <td>8899833737282991</td>
-                            <td>Bank</td>
-                            <td>&#2547;25500</td>
-                        </tr>
-                        <tr>
-                            <td>Nick Wilder</td>
-                            <td>01672345567</td>
-                            <td>Nagad</td>
-                            <td>&#2547;500</td>
-                        </tr>
-                        <tr>
-                            <td>Rick Monty</td>
-                            <td>01627987123</td>
-                            <td>Rocket</td>
-                            <td>&#2547;2500</td>
-                        </tr>
-                        <tr>
-                            <td>David Doe</td>
-                            <td>88983373745882991</td>
-                            <td>Bank</td>
-                            <td>&#2547;13500</td>
-                        </tr>
-                        <tr>
-                            <td>Kendra Jones</td>
-                            <td>01567152636</td>
-                            <td>Bkash</td>
-                            <td>&#2547;2000</td>
-                        </tr>
+                        {{end}}
                     </tbody>
                 </table>
             </div>
@@ -167,52 +115,84 @@
             </nav>
         </div>
     </div>
-    <div class="container-fluid" id="donate">
-        <div class="row gx-0 bg-success">
-            <div class="col-12 col-lg-6">
-                <img class="img-fluid" src="../images/Tamal Bhai 2.jpg" alt="">
+    <div class="container-fluid p-5 bg-success" id="donate">
+        <div class="row">
+            <div class="col d-flex justify-content-center">
+                <h2 class="d-block text-center bg-light text-success rounded px-4 py-2 mb-4">PLEASE DONATE</h2>
             </div>
-            <div class="col-12 col-lg-6 p-5 d-flex align-items-center justify-content-center">
+        </div>
+        <div class="row">
+            <div class="col-12 col-lg-6 p-2 d-flex justify-content-center">
                 <div class="d-block text-light">
-                    <h2 class="mb-4 text-center bg-light text-success rounded">PLEASE DONATE</h2>
-                    <h4 class="text-center border-bottom border-light border-3">Bank Account</h4>
-                    <p class="text-center">Account Name: Tamal Medical Fund</p>
-                    <p class="text-center">Account Number: 1828828374778</p>
-                    <p class="text-center">Bank: Bangladesh Development Bank Ltd.</p>
-                    <p class="text-center">Branch: Motijheel</p>
-                    <p class="text-center">Routing number: 278373</p>
-                    <h4 class="text-center border-bottom border-light border-3">Bkash</h4>
-                    <p>Bkash Number: 01282918281 (Personal)</p>
-                    <p>Bkash Number: 01482144215 (Personal)</p>
-                    <h4 class="text-center border-bottom border-light border-3">Nagad</h4>
-                    <p>Nagad Number: 01282918281 (Personal)</p>
-                    <h4 class="text-center border-bottom border-light border-3">Rocket</h4>
-                    <p>Rocket Number: 012829182814 (Personal)</p>
+                    <h4 class="text-center border-bottom border-light border-3">Bank Account (Bangladesh)</h4>
+                    <p class="text-center">Account Name: MD NAZMUL ISLAM (Joint Account)</p>
+                    <p class="text-center">Account Number: 0710100001005</p>
+                    <p class="text-center">Bank: Bangladesh Development Bank PLC (BDBL)</p>
+                    <p class="text-center">Branch: Elephant Road Branch</p>
+                    <p class="text-center">Routing number: 047261336</p>
+                    <br>
+                    <h4 class="text-center border-bottom border-light border-3">MFS</h4>
+                    <p class="text-center">Bkash: 01737568902 (তাহমীদ, ECE ‘11)</p>
+                    <p class="text-center">Nagad: 01737568902 (তাহমীদ, ECE ‘11)</p>
+                    <p class="text-center">Rocket: 017375689029 (তাহমীদ, ECE ‘11)</p>
+                    <br>
+                    <h4 class="text-center border-bottom border-light border-3">Bank Account (Europe)</h4>
+                    <p class="text-center">Name: Md Mahmud Hassan</p>
+                    <p class="text-center">Bank: Commerzbank</p>
+                    <p class="text-center">IBAN: DE17641400360894222900</p>
+                    <p class="text-center">BIC: COBADEFFXXX</p>
+                    <p class="text-center">Reference: For Tamal</p>
+                </div>
+            </div>
+            <div class="col-12 col-lg-6 p-2 d-flex justify-content-center">
+                <div class="d-block text-light">
+                    <h4 class="text-center border-bottom border-light border-3">Bank Account (Australia)</h4>
+                    <p class="text-center">1. Name: Dasoroth Kumar Paul</p>
+                    <p class="text-center">Pay ID: 0415 158 536</p>
+                    <p class="text-center">Reference: For Tamal</p>
+                    <br>
+                    <p class="text-center">2. Name: Himadri Mondal</p>
+                    <p class="text-center">BSB: 082906</p>
+                    <p class="text-center">Account number: 938939465</p>
+                    <p class="text-center">Reference: For Tamal</p>
+                    <br>
+                    <h4 class="text-center border-bottom border-light border-3">Bank Account (USA)</h4>
+                    <p class="text-center">Account Name: Ragib Shakil Rafi</p>
+                    <p class="text-center">Account Number: 518006727293</p>
+                    <p class="text-center">Routing No: 101100045</p>
+                    <p class="text-center">Zelle: 785-551-1578 or ku.08rafi@gmail.com</p>
                 </div>
             </div>
         </div>
     </div>
-    <div class="container-fluid p-5" id="contact">
-        <div class="row">
-            <h2 class="text-center text-success mb-4">CONTACT US</h2>
-            <h5 class="text-center mb-4">If you have any questions, feedback, suggestions or complaints, please feel free to reach out to us</h5>
-            <form>
-                <div class="mb-3">
-                    <label for="nameInput" class="form-label">Name*</label>
-                    <input type="text" class="form-control border-success" placeholder="Please enter your name" id="nameInput" aria-describedby="nameHelp" required>
+    <div class="container-fluid px-0" id="contact">
+        <div class="row gx-0">
+            <div class="col-12 col-lg-6">
+                <img class="img-fluid" src="assets/images/Tamal Bhai 2.jpg" alt="">
+            </div>
+            <div class="col-12 col-lg-6 p-5 d-flex align-items-center justify-content-center">
+                <div class="d-block">
+                    <h2 class="mb-4 text-center text-success">CONTACT US</h2>
+                    <p class="text-center mb-4">If you have any questions, feedback, suggestions or complaints, please feel free to reach out to us</p>
+                    <form>
+                        <div class="mb-3">
+                            <label for="nameInput" class="form-label">Name*</label>
+                            <input type="text" class="form-control border-success" placeholder="Please enter your name" id="nameInput" aria-describedby="nameHelp" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="emailInput" class="form-label">Email address*</label>
+                            <input type="email" class="form-control border-success" placeholder="Please enter your email address" id="emailInput" aria-describedby="emailHelp" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="inputText" class="form-label">Your comment*</label>
+                            <textarea class="form-control border-success" id="inputText" rows="3" placeholder="Leave a comment..."></textarea>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" class="btn btn-success">Submit</button>
+                        </div>
+                    </form>
                 </div>
-                <div class="mb-3">
-                    <label for="emailInput" class="form-label">Email address*</label>
-                    <input type="email" class="form-control border-success" placeholder="Please enter your email address" id="emailInput" aria-describedby="emailHelp" required>
-                </div>
-                <div class="mb-3">
-                    <label for="inputText" class="form-label">Your comment*</label>
-                    <textarea class="form-control border-success" id="inputText" rows="3" placeholder="Leave a comment..."></textarea>
-                </div>
-                <div class="d-flex justify-content-center">
-                    <button type="submit" class="btn btn-success">Submit</button>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
     <div class="container-fluid p-2 bg-success">

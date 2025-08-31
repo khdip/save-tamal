@@ -4,6 +4,8 @@ const (
 	homePath             = "/"
 	notFoundPath         = "/404"
 	dashboardPath        = "/dashboard"
+	loginPath            = "/login"
+	loginAuthPath        = "/login/auth"
 	userListPath         = "/users"
 	userCreatePath       = "/users/create"
 	userStorePath        = "/users/store"

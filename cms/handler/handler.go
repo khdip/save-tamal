@@ -36,20 +36,29 @@ func GetHandler(decoder *schema.Decoder, session *sessions.CookieStore, assets f
 	hand.GetTemplate()
 
 	r := mux.NewRouter()
-	r.HandleFunc(userCreatePath, hand.createUser)
-	r.HandleFunc(userStorePath, hand.storeUser)
-	r.HandleFunc(userEditPath, hand.editUser)
-	r.HandleFunc(userUpdatePath, hand.updateUser)
-	r.HandleFunc(userListPath, hand.listUser)
-	r.HandleFunc(userViewPath, hand.viewUser)
-	r.HandleFunc(userDeletePath, hand.deleteUser)
-	r.HandleFunc(collectionCreatePath, hand.createCollection)
-	r.HandleFunc(collectionStorePath, hand.storeCollection)
-	r.HandleFunc(collectionEditPath, hand.editCollection)
-	r.HandleFunc(collectionUpdatePath, hand.updateCollection)
-	r.HandleFunc(collectionListPath, hand.listCollection)
-	r.HandleFunc(collectionViewPath, hand.viewCollection)
-	r.HandleFunc(collectionDeletePath, hand.deleteCollection)
+	r.HandleFunc(homePath, hand.homeHandler)
+
+	loginRouter := r.NewRoute().Subrouter()
+	loginRouter.HandleFunc(loginPath, hand.login)
+	loginRouter.HandleFunc(loginAuthPath, hand.loginAuth)
+	loginRouter.Use(hand.restrictMiddleware)
+
+	s := r.NewRoute().Subrouter()
+	s.HandleFunc(userCreatePath, hand.createUser)
+	s.HandleFunc(userStorePath, hand.storeUser)
+	s.HandleFunc(userEditPath, hand.editUser)
+	s.HandleFunc(userUpdatePath, hand.updateUser)
+	s.HandleFunc(userListPath, hand.listUser)
+	s.HandleFunc(userViewPath, hand.viewUser)
+	s.HandleFunc(userDeletePath, hand.deleteUser)
+	s.HandleFunc(collectionCreatePath, hand.createCollection)
+	s.HandleFunc(collectionStorePath, hand.storeCollection)
+	s.HandleFunc(collectionEditPath, hand.editCollection)
+	s.HandleFunc(collectionUpdatePath, hand.updateCollection)
+	s.HandleFunc(collectionListPath, hand.listCollection)
+	s.HandleFunc(collectionViewPath, hand.viewCollection)
+	s.HandleFunc(collectionDeletePath, hand.deleteCollection)
+	s.Use(hand.authMiddleware)
 
 	r.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", http.FileServer(http.FS(hand.assetFS))))
 	r.NotFoundHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -64,6 +73,7 @@ func GetHandler(decoder *schema.Decoder, session *sessions.CookieStore, assets f
 
 func (h *Handler) GetTemplate() {
 	h.templates = template.Must(template.ParseFiles(
+		"cms/assets/templates/index.html",
 		"cms/assets/templates/users/user-list.html",
 		"cms/assets/templates/users/user-create.html",
 		"cms/assets/templates/users/user-edit.html",
@@ -73,5 +83,6 @@ func (h *Handler) GetTemplate() {
 		"cms/assets/templates/collection/coll-edit.html",
 		"cms/assets/templates/collection/coll-view.html",
 		"cms/assets/templates/404.html",
+		"cms/assets/templates/login.html",
 	))
 }

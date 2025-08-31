@@ -38,13 +38,26 @@
             </div>
         </div>
     </nav> 
-    <div class="container-fluid">
-        <div class="row p-5">
-            <div class="col text-center">
-                <h1>Sorry! Couldn't find the requested page.</h1>
-                <img src="/assets/images/undraw-page-not-found.png" alt="Page Not Found" width="500px" height="auto">
-                <div>
-                    <a class="btn btn-success my-4" href="{{.URLs.home}}">Go to Home</a>
+    <div class="container">
+        <div class="row my-4">
+            <div class="card p-5 shadow">
+                <div class="card-header border-0">
+                    <h1>Log In</h1>
+                </div>
+                <div class="card-body">
+                    <h4>{{.Notices}}</h4>
+                    <form method="POST" action="/login/auth">
+                        <div class="mb-3">
+                            <label for="loginEmail" class="form-label">Email*</label>
+                            <input type="email" class="form-control" id="loginEmail" placeholder="Enter your email" name="Email" value="{{.Email}}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="loginPassword" class="form-label">Password*</label>
+                            <input type="password" class="form-control" id="loginPassword" placeholder="Enter your password" name="Password" value="">
+                        </div>
+                        <p class="text-danger">{{.Errors.Error}}</p>
+                        <button class="btn btn-success" type="submit">Log In</button>
+                    </form>
                 </div>
             </div>
         </div>

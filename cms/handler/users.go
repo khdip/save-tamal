@@ -155,7 +155,7 @@ func (h *Handler) listUser(w http.ResponseWriter, r *http.Request) {
 	}
 	usrlst, err := h.uc.ListUser(r.Context(), &usergrpc.ListUserRequest{
 		Filter: &usergrpc.Filter{
-			Offset:     0,
+			Offset:     filterData.Offset,
 			Limit:      limitPerPage,
 			SortBy:     filterData.SortBy,
 			Order:      filterData.Order,

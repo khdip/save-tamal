@@ -19,6 +19,7 @@ require (
 require (
 	github.com/benbjohnson/hashfs v0.2.2
 	github.com/fsnotify/fsnotify v1.9.0 // indirect
+	github.com/go-ozzo/ozzo-validation v3.6.0+incompatible
 	github.com/go-viper/mapstructure/v2 v2.4.0 // indirect
 	github.com/gorilla/securecookie v1.1.2 // indirect
 	github.com/pelletier/go-toml/v2 v2.2.4 // indirect
