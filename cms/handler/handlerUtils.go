@@ -6,7 +6,11 @@ import (
 	"strconv"
 )
 
-const limitPerPage = 10
+const (
+	limitPerPage = 10
+	targetamount = 7500000
+	sessionName  = "tamal-session"
+)
 
 type Filter struct {
 	SearchTerm  string

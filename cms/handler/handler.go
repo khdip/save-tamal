@@ -44,6 +44,7 @@ func GetHandler(decoder *schema.Decoder, session *sessions.CookieStore, assets f
 	loginRouter.Use(hand.restrictMiddleware)
 
 	s := r.NewRoute().Subrouter()
+	s.HandleFunc(dashboardPath, hand.viewDashboard)
 	s.HandleFunc(userCreatePath, hand.createUser)
 	s.HandleFunc(userStorePath, hand.storeUser)
 	s.HandleFunc(userEditPath, hand.editUser)
@@ -61,8 +62,12 @@ func GetHandler(decoder *schema.Decoder, session *sessions.CookieStore, assets f
 	s.Use(hand.authMiddleware)
 
 	r.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", http.FileServer(http.FS(hand.assetFS))))
+
+	type NotFoundTempData struct {
+		URLs map[string]string
+	}
 	r.NotFoundHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		err := hand.templates.ExecuteTemplate(w, "404.html", nil)
+		err := hand.templates.ExecuteTemplate(w, "404.html", NotFoundTempData{URLs: listOfURLs()})
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
@@ -74,6 +79,7 @@ func GetHandler(decoder *schema.Decoder, session *sessions.CookieStore, assets f
 func (h *Handler) GetTemplate() {
 	h.templates = template.Must(template.ParseFiles(
 		"cms/assets/templates/index.html",
+		"cms/assets/templates/dashboard.html",
 		"cms/assets/templates/users/user-list.html",
 		"cms/assets/templates/users/user-create.html",
 		"cms/assets/templates/users/user-edit.html",

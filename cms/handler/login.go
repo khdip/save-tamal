@@ -9,8 +9,6 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-const sessionName = "tamal-session"
-
 type LoginFormData struct {
 	Email    string
 	Password string
