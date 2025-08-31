@@ -38,8 +38,8 @@
     <div class="container-fluid">
         <h2 class="p-2 text-center">User List</h2>
         <div class="row p-2 justify-content-between">
-            <div class="col-md-3">
-                <form action="/sort" method="GET"></form>
+            <!-- <div class="col-md-3">
+                <form action="/users/sort" method="GET">
                     <div class="input-group mb-3">
                         <select class="form-select" name="SortBy">
                             <option selected>Sort By</option>
@@ -59,15 +59,15 @@
                         <button type="submit" class="btn btn-success">Filter</button>
                     </div>
                 </form>
-            </div>
-            <div class="col-md-4">
+            </div> -->
+            <!-- <div class="col-md-4">
                 <form action="/users/search" method="GET">
                     <div class="input-group mb-3">
                         <input type="text" class="form-control" placeholder="Search ..." name="SearchTerm">
                         <button type="submit" class="btn btn-success">Search</button>
                     </div>
                 </form>
-            </div>
+            </div> -->
             <div class="col-md-2">
                 <a class="btn btn-success" href="{{.URLs.userCreate}}">+ Add New User</a>
             </div>

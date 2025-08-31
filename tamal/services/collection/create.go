@@ -16,15 +16,16 @@ func (s *Svc) CreateCollection(ctx context.Context, req *collgrpc.CreateCollecti
 		AccountType:   req.Coll.AccountType,
 		AccountNumber: req.Coll.AccountNumber,
 		Sender:        req.Coll.Sender,
-		Date:          req.Coll.Date.AsTime(),
+		Date:          req.Coll.Date,
 		Amount:        req.Coll.Amount,
+		Currency:      req.Coll.Currency,
 		CRUDTimeDate: storage.CRUDTimeDate{
 			CreatedBy: req.Coll.CreatedBy,
 			UpdatedBy: req.Coll.UpdatedBy,
 		},
 	})
 	if err != nil {
-		return nil, status.Error(codes.Internal, "failed to create user")
+		return nil, status.Error(codes.Internal, "failed to create collection")
 	}
 
 	return &collgrpc.CreateCollectionResponse{

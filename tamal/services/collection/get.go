@@ -11,7 +11,7 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-func (s *Svc) GetUser(ctx context.Context, req *collgrpc.GetCollectionRequest) (*collgrpc.GetCollectionResponse, error) {
+func (s *Svc) GetCollection(ctx context.Context, req *collgrpc.GetCollectionRequest) (*collgrpc.GetCollectionResponse, error) {
 	r, err := s.cst.GetCollection(ctx, storage.Collection{
 		CollectionID: req.Coll.CollectionID,
 	})
@@ -24,8 +24,9 @@ func (s *Svc) GetUser(ctx context.Context, req *collgrpc.GetCollectionRequest) (
 			AccountType:   r.AccountType,
 			AccountNumber: r.AccountNumber,
 			Sender:        r.Sender,
-			Date:          timestamppb.New(r.Date),
+			Date:          r.Date,
 			Amount:        r.Amount,
+			Currency:      r.Currency,
 			CreatedAt:     timestamppb.New(r.CreatedAt),
 			CreatedBy:     r.CreatedBy,
 			UpdatedAt:     timestamppb.New(r.UpdatedAt),

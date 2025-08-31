@@ -15,12 +15,13 @@ type User struct {
 }
 
 type Collection struct {
-	CollectionID  int32     `db:"collection_id"`
-	AccountType   string    `db:"account_type"`
-	AccountNumber string    `db:"account_Number"`
-	Sender        string    `db:"sender"`
-	Date          time.Time `db:"date"`
-	Amount        int32     `db:"amount"`
+	CollectionID  int32  `db:"collection_id"`
+	AccountType   string `db:"account_type"`
+	AccountNumber string `db:"account_number"`
+	Sender        string `db:"sender"`
+	Date          string `db:"date"`
+	Amount        int32  `db:"amount"`
+	Currency      string `db:"currency"`
 	CRUDTimeDate
 }
 
@@ -43,5 +44,5 @@ type Filter struct {
 
 type Stats struct {
 	Count       int32
-	TotalAmount int32
+	TotalAmount int32 `db:"sum"`
 }

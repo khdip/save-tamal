@@ -14,6 +14,7 @@ INSERT INTO collection (
 	sender,
 	date,
 	amount,
+	currency,
 	created_by,
 	updated_by
 ) VALUES (
@@ -22,6 +23,7 @@ INSERT INTO collection (
 	:sender,
 	:date,
 	:amount,
+	:currency,
 	:created_by,
 	:updated_by
 ) RETURNING
@@ -50,7 +52,7 @@ WHERE collection_id = $1 AND deleted_at IS NULL;
 
 func (s *Storage) GetCollection(ctx context.Context, coll storage.Collection) (*storage.Collection, error) {
 	var res storage.Collection
-	if err := s.db.Get(&res, getUser, coll.CollectionID); err != nil {
+	if err := s.db.Get(&res, getCollection, coll.CollectionID); err != nil {
 		return nil, fmt.Errorf("executing collection details: %w", err)
 	}
 	return &res, nil
@@ -83,6 +85,8 @@ SET
     account_number = :account_number,
 	sender = :sender,
 	date = :date,
+	amount = :amount,
+	currency = :currency,
 	updated_at = now(),
 	updated_by = :updated_by
 WHERE 
@@ -136,7 +140,7 @@ func (s *Storage) ListCollection(ctx context.Context, f storage.Filter) ([]stora
 }
 
 func (s *Storage) CollectionStats(ctx context.Context, f storage.Filter) (storage.Stats, error) {
-	var collStat = fmt.Sprintf("SELECT COUNT(*), SUM(amount) FROM users where deleted_at IS NULL AND name ILIKE '%%' || '%s' || '%%';", f.SearchTerm)
+	var collStat = fmt.Sprintf("SELECT COUNT(*), SUM(amount) FROM collection where deleted_at IS NULL AND account_number ILIKE '%%' || '%s' || '%%';", f.SearchTerm)
 	var stat storage.Stats
 	if err := s.db.Get(&stat, collStat); err != nil {
 		if err == sql.ErrNoRows {

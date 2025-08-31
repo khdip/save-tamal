@@ -11,14 +11,15 @@ message Collection {
     string AccountType = 2;
     string AccountNumber = 3;
     string Sender = 4;
-    google.protobuf.Timestamp Date = 5;
+    string Date = 5;
     int32 Amount = 6;
-    google.protobuf.Timestamp CreatedAt = 7;
-    string CreatedBy = 8;
-    google.protobuf.Timestamp UpdatedAt = 9;
-    string UpdatedBy = 10;
-    google.protobuf.Timestamp DeletedAt = 11;
-    string DeletedBy = 12;
+    string Currency = 7;
+    google.protobuf.Timestamp CreatedAt = 8;
+    string CreatedBy = 9;
+    google.protobuf.Timestamp UpdatedAt = 10;
+    string UpdatedBy = 11;
+    google.protobuf.Timestamp DeletedAt = 12;
+    string DeletedBy = 13;
 }
 
 message Filter {

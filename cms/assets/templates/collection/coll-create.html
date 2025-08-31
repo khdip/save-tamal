@@ -41,22 +41,43 @@
             <div class="col-md-6">
                 <form method="post" action="{{.URLs.collStore}}">
                     <div class="mb-3">
-                        <label class="form-label">Name*</label>
-                        <input type="text" class="form-control" name="name" placeholder="Enter user's name" required>
+                        <label class="form-label">Account Type</label>
+                        <select class="form-select" name="AccountType">
+                            <option selected value="Bank">Bank</option>
+                            <option value="Bkash">Bkash</option>
+                            <option value="Nagad">Nagad</option>
+                            <option value="Rocket">Rocket</option>
+                            <option value="Upay">Upay</option>
+                            <option value="Cash">Cash</option>
+                        </select>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Batch</label>
-                        <input type="number" class="form-control" name="batch" placeholder="Enter user's batch">
+                        <label class="form-label">Account Number*</label>
+                        <input type="text" class="form-control" name="AccountNumber" placeholder="Enter donor account number" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Email address*</label>
-                        <input type="email" class="form-control" name="email" placeholder="Enter user's email" required>
+                        <label class="form-label">Sender</label>
+                        <input type="text" class="form-control" name="Sender" placeholder="Enter sender's name">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Password*</label>
-                        <input type="password" class="form-control" name="password" placeholder="Enter a password" required>
+                        <label class="form-label">Date*</label>
+                        <input type="date" class="form-control" name="Date" required>
                     </div>
-                    <a class="btn btn-primary" href="{{.URLs.userList}}">Back to List</a>
+                    <div class="mb-3">
+                        <label class="form-label">Amount*</label>
+                        <input type="number" class="form-control" name="Amount" placeholder="Enter amount" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Currency</label>
+                        <select class="form-select" name="Currency">
+                            <option selected value="BDT">BDT</option>
+                            <option value="AUD">AUD</option>
+                            <option value="USD">USD</option>
+                            <option value="EURO">EURO</option>
+                            <option value="POUND">POUND</option>
+                        </select>
+                    </div>
+                    <a class="btn btn-primary" href="{{.URLs.collList}}">Back to List</a>
                     <button type="submit" class="btn btn-success float-end">Create</button>
                 </form>
             </div>

@@ -11,7 +11,7 @@ import (
 	tspb "google.golang.org/protobuf/types/known/timestamppb"
 )
 
-func (s *Svc) ListUser(ctx context.Context, req *collgrpc.ListCollectionRequest) (*collgrpc.ListCollectionResponse, error) {
+func (s *Svc) ListCollection(ctx context.Context, req *collgrpc.ListCollectionRequest) (*collgrpc.ListCollectionResponse, error) {
 	coll, err := s.cst.ListCollection(ctx, storage.Filter{
 		Offset:     req.Filter.Offset,
 		Limit:      req.Filter.Limit,
@@ -30,8 +30,9 @@ func (s *Svc) ListUser(ctx context.Context, req *collgrpc.ListCollectionRequest)
 			AccountType:   c.AccountType,
 			AccountNumber: c.AccountNumber,
 			Sender:        c.Sender,
-			Date:          tspb.New(c.Date),
+			Date:          c.Date,
 			Amount:        c.Amount,
+			Currency:      c.Currency,
 			CreatedAt:     tspb.New(c.CreatedAt),
 			CreatedBy:     c.CreatedBy,
 			UpdatedAt:     tspb.New(c.UpdatedAt),

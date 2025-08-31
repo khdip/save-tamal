@@ -8,17 +8,17 @@ import (
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-func (s *Svc) UpdateUser(ctx context.Context, req *collgrpc.UpdateCollectionRequest) (*collgrpc.UpdateCollectionResponse, error) {
+func (s *Svc) UpdateCollection(ctx context.Context, req *collgrpc.UpdateCollectionRequest) (*collgrpc.UpdateCollectionResponse, error) {
 	res, err := s.cst.UpdateCollection(ctx, storage.Collection{
 		CollectionID:  req.Coll.CollectionID,
 		AccountType:   req.Coll.AccountType,
 		AccountNumber: req.Coll.AccountNumber,
 		Sender:        req.Coll.Sender,
-		Date:          req.Coll.Date.AsTime(),
+		Date:          req.Coll.Date,
 		Amount:        req.Coll.Amount,
+		Currency:      req.Coll.Currency,
 		CRUDTimeDate: storage.CRUDTimeDate{
 			UpdatedBy: req.Coll.UpdatedBy,
 		},
@@ -35,8 +35,9 @@ func (s *Svc) UpdateUser(ctx context.Context, req *collgrpc.UpdateCollectionRequ
 			AccountType:   res.AccountType,
 			AccountNumber: res.AccountNumber,
 			Sender:        res.Sender,
-			Date:          timestamppb.New(res.Date),
+			Date:          res.Date,
 			Amount:        res.Amount,
+			Currency:      res.Currency,
 		},
 	}, nil
 }

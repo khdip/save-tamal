@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="/assets/css/style.css" rel="stylesheet" type="text/css">
-    <title>Users</title>
+    <title>Collection</title>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-success">
@@ -36,18 +36,20 @@
         </div>
     </nav> 
     <div class="container-fluid">
-        <h2 class="p-2 text-center">User List</h2>
+        <h2 class="p-2 text-center">Collection List</h2>
         <div class="row p-2 justify-content-between">
-            <div class="col-md-3">
-                <form action="/sort" method="GET"></form>
+            <!-- <div class="col-md-3">
+                <form action="/collection/sort" method="GET">
                     <div class="input-group mb-3">
                         <select class="form-select" name="SortBy">
                             <option selected>Sort By</option>
-                            <option value="name">Name</option>
-                            <option value="batch">Batch</option>
-                            <option value="email">Email</option>
+                            <option value="account_type">Account Type</option>
+                            <option value="account_number">Account Number</option>
+                            <option value="sender">Sender</option>
+                            <option value="date">Date</option>
+                            <option value="amount">Amount</option>
                             <option value="created_at">Created At</option>
-                            <option value="created_by">Craeted By</option>
+                            <option value="created_by">Created By</option>
                             <option value="updated_at">Updated At</option>
                             <option value="updated_by">Updated By</option>
                         </select>
@@ -59,17 +61,17 @@
                         <button type="submit" class="btn btn-success">Filter</button>
                     </div>
                 </form>
-            </div>
-            <div class="col-md-4">
-                <form action="/users/search" method="GET">
+            </div> -->
+            <!-- <div class="col-md-4">
+                <form action="/collection/search" method="GET">
                     <div class="input-group mb-3">
                         <input type="text" class="form-control" placeholder="Search ..." name="SearchTerm">
                         <button type="submit" class="btn btn-success">Search</button>
                     </div>
                 </form>
-            </div>
+            </div> -->
             <div class="col-md-2">
-                <a class="btn btn-success" href="{{.URLs.userCreate}}">+ Add New User</a>
+                <a class="btn btn-success" href="{{.URLs.collCreate}}">+ Add Collection</a>
             </div>
         </div>
         <div class="row p-3">
@@ -78,38 +80,42 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Batch</th>
-                                <th>Email</th>
+                                <th>Date</th>
+                                <th>Account Type</th>
+                                <th>Account Number</th>
+                                <th>Sender</th>
+                                <th>Amount</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             {{range .List}}
                             <tr>
-                                <td>{{.Name}}</td>
-                                <td>{{.Batch}}</td>
-                                <td>{{.Email}}</td>
+                                <td>{{.Date}}</td>
+                                <td>{{.AccountType}}</td>
+                                <td>{{.AccountNumber}}</td>
+                                <td>{{.Sender}}</td>
+                                <td>{{.Amount}} {{.Currency}}</td>
                                 <td>
-                                    <a class="btn btn-info btn-sm" href="/users/view/{{.UserID}}">View</a>
-                                    <a class="btn btn-warning btn-sm" href="/users/edit/{{.UserID}}">Edit</a>
-                                    <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#userModal{{.UserID}}">Delete</button>
+                                    <a class="btn btn-info btn-sm" href="/collection/view/{{.CollectionID}}">View</a>
+                                    <a class="btn btn-warning btn-sm" href="/collection/edit/{{.CollectionID}}">Edit</a>
+                                    <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#collModal{{.CollectionID}}">Delete</button>
                                 </td>
                             </tr>
                             <!-- Modal -->
-                            <div class="modal fade" id="userModal{{.UserID}}" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="collModal{{.CollectionID}}" tabindex="-1" aria-labelledby="collModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="userModalLabel">Delete user?</h1>
+                                            <h1 class="modal-title fs-5" id="collModalLabel">Delete collection?</h1>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <p>Are you sure to delete {{.Name}}?</p>
+                                            <p>Are you sure to delete the collection entry?</p>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            <a href="/users/delete/{{.UserID}}" class="btn btn-danger">Delete</a>
+                                            <a href="/collection/delete/{{.CollectionID}}" class="btn btn-danger">Delete</a>
                                         </div>
                                     </div>
                                 </div>

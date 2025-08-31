@@ -1,5 +1,10 @@
 package handler
 
+import (
+	"log"
+	"time"
+)
+
 const limitPerPage = 10
 
 type Filter struct {
@@ -10,6 +15,15 @@ type Filter struct {
 	Limit       int32
 	SortBy      string
 	Order       string
+}
+
+func (h *Handler) stringToDateTime(date string) time.Time {
+	layout := "2006-01-02T15:04"
+	fdate, err := time.Parse(layout, date)
+	if err != nil {
+		log.Println(err)
+	}
+	return fdate
 }
 
 // func GetFilterData(r *http.Request) *Filter {

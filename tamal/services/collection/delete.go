@@ -8,7 +8,7 @@ import (
 	"save-tamal/tamal/storage"
 )
 
-func (s *Svc) DeleteUser(ctx context.Context, req *collgrpc.DeleteCollectionRequest) (*collgrpc.DeleteCollectionResponse, error) {
+func (s *Svc) DeleteCollection(ctx context.Context, req *collgrpc.DeleteCollectionRequest) (*collgrpc.DeleteCollectionResponse, error) {
 	if err := s.cst.DeleteCollection(ctx, storage.Collection{
 		CollectionID: req.Coll.CollectionID,
 		CRUDTimeDate: storage.CRUDTimeDate{

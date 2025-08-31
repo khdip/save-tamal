@@ -28,14 +28,15 @@ type Collection struct {
 	AccountType   string                 `protobuf:"bytes,2,opt,name=AccountType,proto3" json:"AccountType,omitempty"`
 	AccountNumber string                 `protobuf:"bytes,3,opt,name=AccountNumber,proto3" json:"AccountNumber,omitempty"`
 	Sender        string                 `protobuf:"bytes,4,opt,name=Sender,proto3" json:"Sender,omitempty"`
-	Date          *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=Date,proto3" json:"Date,omitempty"`
+	Date          string                 `protobuf:"bytes,5,opt,name=Date,proto3" json:"Date,omitempty"`
 	Amount        int32                  `protobuf:"varint,6,opt,name=Amount,proto3" json:"Amount,omitempty"`
-	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=CreatedAt,proto3" json:"CreatedAt,omitempty"`
-	CreatedBy     string                 `protobuf:"bytes,8,opt,name=CreatedBy,proto3" json:"CreatedBy,omitempty"`
-	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=UpdatedAt,proto3" json:"UpdatedAt,omitempty"`
-	UpdatedBy     string                 `protobuf:"bytes,10,opt,name=UpdatedBy,proto3" json:"UpdatedBy,omitempty"`
-	DeletedAt     *timestamppb.Timestamp `protobuf:"bytes,11,opt,name=DeletedAt,proto3" json:"DeletedAt,omitempty"`
-	DeletedBy     string                 `protobuf:"bytes,12,opt,name=DeletedBy,proto3" json:"DeletedBy,omitempty"`
+	Currency      string                 `protobuf:"bytes,7,opt,name=Currency,proto3" json:"Currency,omitempty"`
+	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=CreatedAt,proto3" json:"CreatedAt,omitempty"`
+	CreatedBy     string                 `protobuf:"bytes,9,opt,name=CreatedBy,proto3" json:"CreatedBy,omitempty"`
+	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=UpdatedAt,proto3" json:"UpdatedAt,omitempty"`
+	UpdatedBy     string                 `protobuf:"bytes,11,opt,name=UpdatedBy,proto3" json:"UpdatedBy,omitempty"`
+	DeletedAt     *timestamppb.Timestamp `protobuf:"bytes,12,opt,name=DeletedAt,proto3" json:"DeletedAt,omitempty"`
+	DeletedBy     string                 `protobuf:"bytes,13,opt,name=DeletedBy,proto3" json:"DeletedBy,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -98,11 +99,11 @@ func (x *Collection) GetSender() string {
 	return ""
 }
 
-func (x *Collection) GetDate() *timestamppb.Timestamp {
+func (x *Collection) GetDate() string {
 	if x != nil {
 		return x.Date
 	}
-	return nil
+	return ""
 }
 
 func (x *Collection) GetAmount() int32 {
@@ -110,6 +111,13 @@ func (x *Collection) GetAmount() int32 {
 		return x.Amount
 	}
 	return 0
+}
+
+func (x *Collection) GetCurrency() string {
+	if x != nil {
+		return x.Currency
+	}
+	return ""
 }
 
 func (x *Collection) GetCreatedAt() *timestamppb.Timestamp {
@@ -813,16 +821,17 @@ const file_proto_collection_collection_proto_rawDesc = "" +
 	"\fCollectionID\x18\x01 \x01(\x05R\fCollectionID\x12 \n" +
 	"\vAccountType\x18\x02 \x01(\tR\vAccountType\x12$\n" +
 	"\rAccountNumber\x18\x03 \x01(\tR\rAccountNumber\x12\x16\n" +
-	"\x06Sender\x18\x04 \x01(\tR\x06Sender\x12.\n" +
-	"\x04Date\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\x04Date\x12\x16\n" +
-	"\x06Amount\x18\x06 \x01(\x05R\x06Amount\x128\n" +
-	"\tCreatedAt\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\tCreatedAt\x12\x1c\n" +
-	"\tCreatedBy\x18\b \x01(\tR\tCreatedBy\x128\n" +
-	"\tUpdatedAt\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\tUpdatedAt\x12\x1c\n" +
-	"\tUpdatedBy\x18\n" +
-	" \x01(\tR\tUpdatedBy\x128\n" +
-	"\tDeletedAt\x18\v \x01(\v2\x1a.google.protobuf.TimestampR\tDeletedAt\x12\x1c\n" +
-	"\tDeletedBy\x18\f \x01(\tR\tDeletedBy\"\x84\x01\n" +
+	"\x06Sender\x18\x04 \x01(\tR\x06Sender\x12\x12\n" +
+	"\x04Date\x18\x05 \x01(\tR\x04Date\x12\x16\n" +
+	"\x06Amount\x18\x06 \x01(\x05R\x06Amount\x12\x1a\n" +
+	"\bCurrency\x18\a \x01(\tR\bCurrency\x128\n" +
+	"\tCreatedAt\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\tCreatedAt\x12\x1c\n" +
+	"\tCreatedBy\x18\t \x01(\tR\tCreatedBy\x128\n" +
+	"\tUpdatedAt\x18\n" +
+	" \x01(\v2\x1a.google.protobuf.TimestampR\tUpdatedAt\x12\x1c\n" +
+	"\tUpdatedBy\x18\v \x01(\tR\tUpdatedBy\x128\n" +
+	"\tDeletedAt\x18\f \x01(\v2\x1a.google.protobuf.TimestampR\tDeletedAt\x12\x1c\n" +
+	"\tDeletedBy\x18\r \x01(\tR\tDeletedBy\"\x84\x01\n" +
 	"\x06Filter\x12\x16\n" +
 	"\x06Offset\x18\x01 \x01(\x05R\x06Offset\x12\x14\n" +
 	"\x05Limit\x18\x02 \x01(\x05R\x05Limit\x12\x16\n" +
@@ -897,37 +906,36 @@ var file_proto_collection_collection_proto_goTypes = []any{
 	(*timestamppb.Timestamp)(nil),    // 15: google.protobuf.Timestamp
 }
 var file_proto_collection_collection_proto_depIdxs = []int32{
-	15, // 0: collection.Collection.Date:type_name -> google.protobuf.Timestamp
-	15, // 1: collection.Collection.CreatedAt:type_name -> google.protobuf.Timestamp
-	15, // 2: collection.Collection.UpdatedAt:type_name -> google.protobuf.Timestamp
-	15, // 3: collection.Collection.DeletedAt:type_name -> google.protobuf.Timestamp
-	0,  // 4: collection.CreateCollectionRequest.coll:type_name -> collection.Collection
-	0,  // 5: collection.GetCollectionRequest.coll:type_name -> collection.Collection
-	0,  // 6: collection.GetCollectionResponse.coll:type_name -> collection.Collection
-	0,  // 7: collection.UpdateCollectionRequest.coll:type_name -> collection.Collection
-	0,  // 8: collection.UpdateCollectionResponse.coll:type_name -> collection.Collection
-	0,  // 9: collection.DeleteCollectionRequest.coll:type_name -> collection.Collection
-	1,  // 10: collection.ListCollectionRequest.filter:type_name -> collection.Filter
-	0,  // 11: collection.ListCollectionResponse.coll:type_name -> collection.Collection
-	1,  // 12: collection.CollectionStatsRequest.filter:type_name -> collection.Filter
-	2,  // 13: collection.CollectionStatsResponse.stats:type_name -> collection.Stats
-	3,  // 14: collection.CollectionService.CreateCollection:input_type -> collection.CreateCollectionRequest
-	5,  // 15: collection.CollectionService.GetCollection:input_type -> collection.GetCollectionRequest
-	7,  // 16: collection.CollectionService.UpdateCollection:input_type -> collection.UpdateCollectionRequest
-	9,  // 17: collection.CollectionService.DeleteCollection:input_type -> collection.DeleteCollectionRequest
-	11, // 18: collection.CollectionService.ListCollection:input_type -> collection.ListCollectionRequest
-	13, // 19: collection.CollectionService.CollectionStats:input_type -> collection.CollectionStatsRequest
-	4,  // 20: collection.CollectionService.CreateCollection:output_type -> collection.CreateCollectionResponse
-	6,  // 21: collection.CollectionService.GetCollection:output_type -> collection.GetCollectionResponse
-	8,  // 22: collection.CollectionService.UpdateCollection:output_type -> collection.UpdateCollectionResponse
-	10, // 23: collection.CollectionService.DeleteCollection:output_type -> collection.DeleteCollectionResponse
-	12, // 24: collection.CollectionService.ListCollection:output_type -> collection.ListCollectionResponse
-	14, // 25: collection.CollectionService.CollectionStats:output_type -> collection.CollectionStatsResponse
-	20, // [20:26] is the sub-list for method output_type
-	14, // [14:20] is the sub-list for method input_type
-	14, // [14:14] is the sub-list for extension type_name
-	14, // [14:14] is the sub-list for extension extendee
-	0,  // [0:14] is the sub-list for field type_name
+	15, // 0: collection.Collection.CreatedAt:type_name -> google.protobuf.Timestamp
+	15, // 1: collection.Collection.UpdatedAt:type_name -> google.protobuf.Timestamp
+	15, // 2: collection.Collection.DeletedAt:type_name -> google.protobuf.Timestamp
+	0,  // 3: collection.CreateCollectionRequest.coll:type_name -> collection.Collection
+	0,  // 4: collection.GetCollectionRequest.coll:type_name -> collection.Collection
+	0,  // 5: collection.GetCollectionResponse.coll:type_name -> collection.Collection
+	0,  // 6: collection.UpdateCollectionRequest.coll:type_name -> collection.Collection
+	0,  // 7: collection.UpdateCollectionResponse.coll:type_name -> collection.Collection
+	0,  // 8: collection.DeleteCollectionRequest.coll:type_name -> collection.Collection
+	1,  // 9: collection.ListCollectionRequest.filter:type_name -> collection.Filter
+	0,  // 10: collection.ListCollectionResponse.coll:type_name -> collection.Collection
+	1,  // 11: collection.CollectionStatsRequest.filter:type_name -> collection.Filter
+	2,  // 12: collection.CollectionStatsResponse.stats:type_name -> collection.Stats
+	3,  // 13: collection.CollectionService.CreateCollection:input_type -> collection.CreateCollectionRequest
+	5,  // 14: collection.CollectionService.GetCollection:input_type -> collection.GetCollectionRequest
+	7,  // 15: collection.CollectionService.UpdateCollection:input_type -> collection.UpdateCollectionRequest
+	9,  // 16: collection.CollectionService.DeleteCollection:input_type -> collection.DeleteCollectionRequest
+	11, // 17: collection.CollectionService.ListCollection:input_type -> collection.ListCollectionRequest
+	13, // 18: collection.CollectionService.CollectionStats:input_type -> collection.CollectionStatsRequest
+	4,  // 19: collection.CollectionService.CreateCollection:output_type -> collection.CreateCollectionResponse
+	6,  // 20: collection.CollectionService.GetCollection:output_type -> collection.GetCollectionResponse
+	8,  // 21: collection.CollectionService.UpdateCollection:output_type -> collection.UpdateCollectionResponse
+	10, // 22: collection.CollectionService.DeleteCollection:output_type -> collection.DeleteCollectionResponse
+	12, // 23: collection.CollectionService.ListCollection:output_type -> collection.ListCollectionResponse
+	14, // 24: collection.CollectionService.CollectionStats:output_type -> collection.CollectionStatsResponse
+	19, // [19:25] is the sub-list for method output_type
+	13, // [13:19] is the sub-list for method input_type
+	13, // [13:13] is the sub-list for extension type_name
+	13, // [13:13] is the sub-list for extension extendee
+	0,  // [0:13] is the sub-list for field type_name
 }
 
 func init() { file_proto_collection_collection_proto_init() }

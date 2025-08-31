@@ -9,7 +9,6 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
-	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type Collection struct {
@@ -17,8 +16,9 @@ type Collection struct {
 	AccountType   string
 	AccountNumber string
 	Sender        string
-	Date          time.Time
+	Date          string
 	Amount        int32
+	Currency      string
 	CreatedAt     time.Time
 	CreatedBy     string
 	UpdatedAt     time.Time
@@ -59,7 +59,9 @@ func (h *Handler) storeCollection(w http.ResponseWriter, r *http.Request) {
 			AccountType:   coll.AccountType,
 			AccountNumber: coll.AccountNumber,
 			Sender:        coll.Sender,
-			Date:          timestamppb.New(coll.Date),
+			Date:          coll.Date,
+			Amount:        coll.Amount,
+			Currency:      coll.Currency,
 			CreatedBy:     "",
 			UpdatedBy:     "",
 		},
@@ -95,8 +97,9 @@ func (h *Handler) editCollection(w http.ResponseWriter, r *http.Request) {
 		AccountType:   res.Coll.AccountType,
 		AccountNumber: res.Coll.AccountNumber,
 		Sender:        res.Coll.Sender,
-		Date:          res.Coll.Date.AsTime(),
+		Date:          res.Coll.Date,
 		Amount:        res.Coll.Amount,
+		Currency:      res.Coll.Currency,
 	})
 }
 
@@ -127,8 +130,9 @@ func (h *Handler) updateCollection(w http.ResponseWriter, r *http.Request) {
 			AccountType:   coll.AccountType,
 			AccountNumber: coll.AccountNumber,
 			Sender:        coll.Sender,
-			Date:          timestamppb.New(coll.Date),
+			Date:          coll.Date,
 			Amount:        coll.Amount,
+			Currency:      coll.Currency,
 			UpdatedBy:     "",
 		},
 	}); err != nil {
@@ -178,8 +182,9 @@ func (h *Handler) listCollection(w http.ResponseWriter, r *http.Request) {
 			AccountType:   item.AccountType,
 			AccountNumber: item.AccountNumber,
 			Sender:        item.Sender,
-			Date:          item.Date.AsTime(),
+			Date:          item.Date,
 			Amount:        item.Amount,
+			Currency:      item.Currency,
 			CreatedAt:     item.CreatedAt.AsTime(),
 			CreatedBy:     item.CreatedBy,
 			UpdatedAt:     item.UpdatedAt.AsTime(),
@@ -249,8 +254,9 @@ func (h *Handler) viewCollection(w http.ResponseWriter, r *http.Request) {
 			AccountType:   res.Coll.AccountType,
 			AccountNumber: res.Coll.AccountNumber,
 			Sender:        res.Coll.Sender,
-			Date:          res.Coll.Date.AsTime(),
+			Date:          res.Coll.Date,
 			Amount:        res.Coll.Amount,
+			Currency:      res.Coll.Currency,
 			CreatedAt:     res.Coll.CreatedAt.AsTime(),
 			CreatedBy:     res.Coll.CreatedBy,
 			UpdatedAt:     res.Coll.UpdatedAt.AsTime(),
