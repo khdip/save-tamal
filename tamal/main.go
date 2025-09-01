@@ -13,6 +13,10 @@ import (
 	collcore "save-tamal/tamal/core/collection"
 	collsvc "save-tamal/tamal/services/collection"
 
+	commgrpc "save-tamal/proto/comments"
+	commcore "save-tamal/tamal/core/comments"
+	commsvc "save-tamal/tamal/services/comments"
+
 	"save-tamal/tamal/storage/postgres"
 	"strconv"
 	"strings"
@@ -47,6 +51,10 @@ func main() {
 	collC := collcore.New(store)
 	collS := collsvc.New(collC)
 	collgrpc.RegisterCollectionServiceServer(grpcServer, collS)
+
+	commC := commcore.New(store)
+	commS := commsvc.New(commC)
+	commgrpc.RegisterCommentServiceServer(grpcServer, commS)
 
 	host, port := config.GetString("server.host"), config.GetString("server.port")
 	lis, err := net.Listen("tcp", fmt.Sprintf("%s:%s", host, port))

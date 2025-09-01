@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"log"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -64,4 +65,18 @@ func GetFilterData(r *http.Request) *Filter {
 	data.CurrentPage = int32(currentPage)
 	data.Offset = offset
 	return &data
+}
+
+func (h *Handler) getLoggedUser(w http.ResponseWriter, r *http.Request) string {
+	session, err := h.session.Get(r, sessionName)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	authUserID := session.Values["authUserId"]
+	if authUserID != nil {
+		return authUserID.(string)
+	} else {
+		return ""
+	}
 }

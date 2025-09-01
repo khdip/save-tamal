@@ -25,6 +25,14 @@ type Collection struct {
 	CRUDTimeDate
 }
 
+type Comment struct {
+	CommentID int32     `db:"comment_id"`
+	Name      string    `db:"name"`
+	Email     string    `db:"email"`
+	Comment   string    `db:"comment"`
+	CreatedAt time.Time `db:"created_at,omitempty"`
+}
+
 type CRUDTimeDate struct {
 	CreatedAt time.Time      `db:"created_at,omitempty"`
 	CreatedBy string         `db:"created_by"`

@@ -20,6 +20,10 @@ const (
 	collectionUpdatePath = "/collection/update/{collection_id}"
 	collectionDeletePath = "/collection/delete/{collection_id}"
 	collectionViewPath   = "/collection/view/{collection_id}"
+	commentListPath      = "/comments"
+	commentCreatePath    = "/comments/create"
+	commentStorePath     = "/comments/store"
+	commentViewPath      = "/comments/view/{comment_id}"
 )
 
 func listOfURLs() map[string]string {
@@ -40,5 +44,9 @@ func listOfURLs() map[string]string {
 		"collUpdate": collectionUpdatePath,
 		"collDelete": collectionDeletePath,
 		"collView":   collectionViewPath,
+		"commCreate": commentCreatePath,
+		"commStore":  commentStorePath,
+		"commList":   commentListPath,
+		"commView":   commentViewPath,
 	}
 }

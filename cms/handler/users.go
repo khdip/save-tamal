@@ -64,8 +64,8 @@ func (h *Handler) storeUser(w http.ResponseWriter, r *http.Request) {
 			Batch:     usr.Batch,
 			Email:     usr.Email,
 			Password:  string(passByte),
-			CreatedBy: "",
-			UpdatedBy: "",
+			CreatedBy: h.getLoggedUser(w, r),
+			UpdatedBy: h.getLoggedUser(w, r),
 		},
 	})
 	if err != nil {
@@ -125,7 +125,7 @@ func (h *Handler) updateUser(w http.ResponseWriter, r *http.Request) {
 			Batch:     usr.Batch,
 			Email:     usr.Email,
 			Password:  string(passByte),
-			UpdatedBy: "",
+			UpdatedBy: h.getLoggedUser(w, r),
 		},
 	}); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -262,7 +262,7 @@ func (h *Handler) deleteUser(w http.ResponseWriter, r *http.Request) {
 	if _, err := h.uc.DeleteUser(ctx, &usergrpc.DeleteUserRequest{
 		User: &usergrpc.User{
 			UserID:    id,
-			DeletedBy: "",
+			DeletedBy: h.getLoggedUser(w, r),
 		},
 	}); err != nil {
 		log.Println("unable to delete user: ", err)

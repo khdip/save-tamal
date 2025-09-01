@@ -18,6 +18,7 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 
 	collgrpc "save-tamal/proto/collection"
+	commgrpc "save-tamal/proto/comments"
 	usergrpc "save-tamal/proto/users"
 )
 
@@ -57,7 +58,8 @@ func main() {
 
 	uc := usergrpc.NewUserServiceClient(conn)
 	cc := collgrpc.NewCollectionServiceClient(conn)
-	r := handler.GetHandler(decoder, store, asst, uc, cc)
+	cmc := commgrpc.NewCommentServiceClient(conn)
+	r := handler.GetHandler(decoder, store, asst, uc, cc, cmc)
 
 	host, port := config.GetString("server.host"), config.GetString("server.port")
 	log.Println("Server  starting...")

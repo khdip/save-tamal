@@ -11,6 +11,7 @@ import (
 	"github.com/gorilla/sessions"
 
 	collgrpc "save-tamal/proto/collection"
+	commgrpc "save-tamal/proto/comments"
 	usergrpc "save-tamal/proto/users"
 )
 
@@ -22,9 +23,10 @@ type Handler struct {
 	assetFS   *hashfs.FS
 	uc        usergrpc.UserServiceClient
 	cc        collgrpc.CollectionServiceClient
+	cmc       commgrpc.CommentServiceClient
 }
 
-func GetHandler(decoder *schema.Decoder, session *sessions.CookieStore, assets fs.FS, uc usergrpc.UserServiceClient, cc collgrpc.CollectionServiceClient) *mux.Router {
+func GetHandler(decoder *schema.Decoder, session *sessions.CookieStore, assets fs.FS, uc usergrpc.UserServiceClient, cc collgrpc.CollectionServiceClient, cmc commgrpc.CommentServiceClient) *mux.Router {
 	hand := &Handler{
 		decoder: decoder,
 		session: session,
@@ -32,11 +34,13 @@ func GetHandler(decoder *schema.Decoder, session *sessions.CookieStore, assets f
 		assetFS: hashfs.NewFS(assets),
 		uc:      uc,
 		cc:      cc,
+		cmc:     cmc,
 	}
 	hand.GetTemplate()
 
 	r := mux.NewRouter()
 	r.HandleFunc(homePath, hand.homeHandler)
+	r.HandleFunc(commentStorePath, hand.storeComment)
 
 	loginRouter := r.NewRoute().Subrouter()
 	loginRouter.HandleFunc(loginPath, hand.login)
@@ -59,6 +63,8 @@ func GetHandler(decoder *schema.Decoder, session *sessions.CookieStore, assets f
 	s.HandleFunc(collectionListPath, hand.listCollection)
 	s.HandleFunc(collectionViewPath, hand.viewCollection)
 	s.HandleFunc(collectionDeletePath, hand.deleteCollection)
+	s.HandleFunc(commentListPath, hand.listComment)
+	s.HandleFunc(commentViewPath, hand.viewComment)
 	s.Use(hand.authMiddleware)
 
 	r.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", http.FileServer(http.FS(hand.assetFS))))
@@ -88,6 +94,8 @@ func (h *Handler) GetTemplate() {
 		"cms/assets/templates/collection/coll-create.html",
 		"cms/assets/templates/collection/coll-edit.html",
 		"cms/assets/templates/collection/coll-view.html",
+		"cms/assets/templates/comments/comm-list.html",
+		"cms/assets/templates/comments/comm-view.html",
 		"cms/assets/templates/404.html",
 		"cms/assets/templates/login.html",
 	))

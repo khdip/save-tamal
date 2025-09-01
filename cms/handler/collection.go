@@ -62,8 +62,8 @@ func (h *Handler) storeCollection(w http.ResponseWriter, r *http.Request) {
 			Date:          coll.Date,
 			Amount:        coll.Amount,
 			Currency:      coll.Currency,
-			CreatedBy:     "",
-			UpdatedBy:     "",
+			CreatedBy:     h.getLoggedUser(w, r),
+			UpdatedBy:     h.getLoggedUser(w, r),
 		},
 	})
 	if err != nil {
@@ -133,7 +133,7 @@ func (h *Handler) updateCollection(w http.ResponseWriter, r *http.Request) {
 			Date:          coll.Date,
 			Amount:        coll.Amount,
 			Currency:      coll.Currency,
-			UpdatedBy:     "",
+			UpdatedBy:     h.getLoggedUser(w, r),
 		},
 	}); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -286,7 +286,7 @@ func (h *Handler) deleteCollection(w http.ResponseWriter, r *http.Request) {
 	if _, err := h.cc.DeleteCollection(ctx, &collgrpc.DeleteCollectionRequest{
 		Coll: &collgrpc.Collection{
 			CollectionID: int32(cid),
-			DeletedBy:    "",
+			DeletedBy:    h.getLoggedUser(w, r),
 		},
 	}); err != nil {
 		log.Println("unable to delete collection: ", err)

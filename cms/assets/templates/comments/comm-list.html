@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="/assets/css/style.css" rel="stylesheet" type="text/css">
-    <title>Collection</title>
+    <title>Comments</title>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-success">
@@ -20,13 +20,13 @@
                         <a class="nav-link" href="{{.URLs.dashboard}}">Dashboard</a>
                     </li>
                     <li class="nav-item mx-lg-2">
-                        <a class="nav-link active" href="{{.URLs.collList}}">Collection</a>
+                        <a class="nav-link" href="{{.URLs.collList}}">Collection</a>
                     </li>
                     <li class="nav-item mx-lg-2">
                         <a class="nav-link" href="{{.URLs.userList}}">Users</a>
                     </li>
                     <li class="nav-item mx-lg-2">
-                        <a class="nav-link" href="{{.URLs.commList}}">Comments</a>
+                        <a class="nav-link active" href="{{.URLs.commList}}">Comments</a>
                     </li>
                     <li class="nav-item mx-lg-2">
                         <a class="nav-link" href="{{.URLs.home}}">Homepage</a>
@@ -36,7 +36,7 @@
         </div>
     </nav> 
     <div class="container-fluid">
-        <h2 class="p-2 text-center">Collection List</h2>
+        <h2 class="p-2 text-center">Comment List</h2>
         <div class="row p-2 justify-content-between">
             <!-- <div class="col-md-3">
                 <form action="/collection/sort" method="GET">
@@ -70,9 +70,6 @@
                     </div>
                 </form>
             </div> -->
-            <div class="col-md-2">
-                <a class="btn btn-success" href="{{.URLs.collCreate}}">+ Add Collection</a>
-            </div>
         </div>
         <div class="row p-3">
             <div class="col">
@@ -80,46 +77,22 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Date</th>
-                                <th>Account Type</th>
-                                <th>Account Number</th>
-                                <th>Sender</th>
-                                <th>Amount</th>
+                                <th>Serial</th>
+                                <th>Name</th>
+                                <th>Email</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             {{range .List}}
                             <tr>
-                                <td>{{.Date}}</td>
-                                <td>{{.AccountType}}</td>
-                                <td>{{.AccountNumber}}</td>
-                                <td>{{.Sender}}</td>
-                                <td>{{.Amount}} {{.Currency}}</td>
+                                <td>{{.CommentID}}</td>
+                                <td>{{.Name}}</td>
+                                <td>{{.Email}}</td>
                                 <td>
-                                    <a class="btn btn-info btn-sm" href="/collection/view/{{.CollectionID}}">View</a>
-                                    <a class="btn btn-warning btn-sm" href="/collection/edit/{{.CollectionID}}">Edit</a>
-                                    <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#collModal{{.CollectionID}}">Delete</button>
+                                    <a class="btn btn-info btn-sm" href="/comments/view/{{.CommentID}}">View</a>
                                 </td>
                             </tr>
-                            <!-- Modal -->
-                            <div class="modal fade" id="collModal{{.CollectionID}}" tabindex="-1" aria-labelledby="collModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="collModalLabel">Delete collection?</h1>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <p>Are you sure to delete the collection entry?</p>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            <a href="/collection/delete/{{.CollectionID}}" class="btn btn-danger">Delete</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                             {{end}}
                         </tbody>
                     </table>
