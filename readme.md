@@ -25,3 +25,15 @@ protoc --go_out=. --go_opt=paths=source_relative \
     --go-grpc_out=. --go-grpc_opt=paths=source_relative \
     ./proto/users/users.proto 
 ```
+To run the migration:
+```
+cd tamal
+go run migrations/migrate.go up
+```
+To run the server:
+```go run tamal/main.go
+```
+To run the cms:
+```
+go run cms/main.go
+```
