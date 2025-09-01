@@ -156,14 +156,10 @@ func (h *Handler) listCollection(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	filterData := Filter{
-		SearchTerm: r.FormValue("SearchTerm"),
-		SortBy:     r.FormValue("SortBy"),
-		Order:      r.FormValue("Order"),
-	}
+	filterData := GetFilterData(r)
 	clst, err := h.cc.ListCollection(r.Context(), &collgrpc.ListCollectionRequest{
 		Filter: &collgrpc.Filter{
-			Offset:     0,
+			Offset:     filterData.Offset,
 			Limit:      limitPerPage,
 			SortBy:     filterData.SortBy,
 			Order:      filterData.Order,
@@ -214,7 +210,7 @@ func (h *Handler) listCollection(w http.ResponseWriter, r *http.Request) {
 		msg = map[string]string{"NotFoundMessage": "Data Not Found"}
 	}
 	data := CollTemplateData{
-		FilterData: filterData,
+		FilterData: *filterData,
 		List:       collList,
 		Message:    msg,
 		URLs:       listOfURLs(),

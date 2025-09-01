@@ -148,11 +148,7 @@ func (h *Handler) listUser(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	filterData := Filter{
-		SearchTerm: r.FormValue("SearchTerm"),
-		SortBy:     r.FormValue("SortBy"),
-		Order:      r.FormValue("Order"),
-	}
+	filterData := GetFilterData(r)
 	usrlst, err := h.uc.ListUser(r.Context(), &usergrpc.ListUserRequest{
 		Filter: &usergrpc.Filter{
 			Offset:     filterData.Offset,
@@ -203,7 +199,7 @@ func (h *Handler) listUser(w http.ResponseWriter, r *http.Request) {
 		msg = map[string]string{"NotFoundMessage": "Data Not Found"}
 	}
 	data := UserTemplateData{
-		FilterData: filterData,
+		FilterData: *filterData,
 		List:       userList,
 		Message:    msg,
 		URLs:       listOfURLs(),

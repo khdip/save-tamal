@@ -115,7 +115,7 @@ func (s *Storage) ListCollection(ctx context.Context, f storage.Filter) ([]stora
 	order := "DESC"
 	sortBy := "date"
 
-	if f.SortBy != "" {
+	if f.Order != "" {
 		order = f.Order
 	}
 	if f.SortBy != "" {

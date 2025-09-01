@@ -14,14 +14,26 @@ type Page struct {
 }
 
 type Paginator struct {
-	Prev         *Page
-	Next         *Page
-	Total        int32
-	PerPage      int32
-	TotalShowing int32
-	CurrentPage  int32
-	ShowingRange string
-	Pages        []Page
+	Prev          *Page
+	Next          *Page
+	Total         int32
+	PerPage       int32
+	TotalShowing  int32
+	CurrentPage   int32
+	ShowingRange  string
+	Pages         []Page
+	CountPaginate int32
+}
+
+func countPaginate(a, b int32) int32 {
+	if a > 0 {
+		c := a / b
+		if a%b != 0 {
+			c = c + 1
+		}
+		return c
+	}
+	return 0
 }
 
 func NewPaginator(currentPage, perPage int32, total int32, req *http.Request) Paginator {
@@ -104,6 +116,8 @@ func NewPaginator(currentPage, perPage int32, total int32, req *http.Request) Pa
 		pageURL.RawQuery = params.Encode()
 		p.Next = &Page{URL: pageURL.String()}
 	}
+
+	p.CountPaginate = countPaginate(p.Total, p.PerPage)
 
 	return p
 }

@@ -31,20 +31,20 @@ func GetFilterData(r *http.Request) *Filter {
 	var data Filter
 	queryParams := r.URL.Query()
 	var err error
-	// data.SearchTerm, err = url.PathUnescape(queryParams.Get("SearchTerm"))
-	// if err != nil {
-	// 	data.SearchTerm = ""
-	// }
-	// data.SortBy = "created_at"
-	// data.SortBy, err = url.PathUnescape(queryParams.Get("SortBy"))
-	// if err != nil {
-	// 	data.SortBy = "created_at"
-	// }
-	// data.Order = "ASC"
-	// data.Order, err = url.PathUnescape(queryParams.Get("Order"))
-	// if err != nil {
-	// 	data.Order = "ASC"
-	// }
+	data.SearchTerm, err = url.PathUnescape(queryParams.Get("SearchTerm"))
+	if err != nil {
+		data.SearchTerm = ""
+	}
+	data.SortBy = "created_at"
+	data.SortBy, err = url.PathUnescape(queryParams.Get("SortBy"))
+	if err != nil {
+		data.SortBy = "created_at"
+	}
+	data.Order = "ASC"
+	data.Order, err = url.PathUnescape(queryParams.Get("Order"))
+	if err != nil {
+		data.Order = "ASC"
+	}
 	page, err := url.PathUnescape(queryParams.Get("page"))
 	if err != nil {
 		page = "1"

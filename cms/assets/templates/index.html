@@ -98,19 +98,27 @@
             </div>
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-center">
-                    <li class="page-item">
-                        <a class="page-link text-success" href="#" aria-label="Previous">
+                    {{if ne .Paginator.Total 0}}
+                    <li class="page-item {{if eq .Paginator.CurrentPage 1}} disabled {{end}}">
+                        <a class="page-link text-success" {{if .Paginator.Prev}} href="{{.Paginator.Prev.URL}}" {{end}} aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
-                    <li class="page-item"><a class="page-link text-success" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link text-success" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link text-success" href="#">3</a></li>
-                    <li class="page-item">
-                        <a class="page-link text-success" href="#" aria-label="Next">
+                    {{end}}
+                    {{range .Paginator.Pages}}
+                    {{if .Order}}
+                    <li class="page-item"><a class="page-link {{if .Current}}bg-success text-light {{else}} text-success{{end}}" href="{{.URL}}">{{.Order}}</a></li>
+                    {{else}}
+                    <li><a class="page-link text-success">...</a></li>
+                    {{end}}
+                    {{end}}
+                    {{if ne .Paginator.Total 0}}
+                    <li class="page-item  {{if eq .Paginator.CurrentPage .Paginator.CountPaginate}} disabled {{end}}">
+                        <a class="page-link text-success" {{if .Paginator.Next}} href="{{.Paginator.Next.URL}}" {{end}} aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
+                    {{end}}
                 </ul>
             </nav>
         </div>

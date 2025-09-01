@@ -129,7 +129,7 @@
                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-center">
                         {{if ne .Paginator.Total 0}}
-                        <li class="page-item">
+                        <li class="page-item {{if eq .Paginator.CurrentPage 1}} disabled {{end}}">
                             <a class="page-link text-success" {{if .Paginator.Prev}} href="{{.Paginator.Prev.URL}}" {{end}} aria-label="Previous">
                                 <span aria-hidden="true">&laquo;</span>
                             </a>
@@ -137,13 +137,13 @@
                         {{end}}
                         {{range .Paginator.Pages}}
                         {{if .Order}}
-                        <li class="page-item {{if .Current}}active{{end}}"><a class="page-link text-success" href="{{.URL}}">{{.Order}}</a></li>
+                        <li class="page-item"><a class="page-link {{if .Current}}bg-success text-light {{else}} text-success{{end}}" href="{{.URL}}">{{.Order}}</a></li>
                         {{else}}
                         <li><a class="page-link text-success">...</a></li>
                         {{end}}
                         {{end}}
                         {{if ne .Paginator.Total 0}}
-                        <li class="page-item">
+                        <li class="page-item  {{if eq .Paginator.CurrentPage .Paginator.CountPaginate}} disabled {{end}}">
                             <a class="page-link text-success" {{if .Paginator.Next}} href="{{.Paginator.Next.URL}}" {{end}} aria-label="Next">
                                 <span aria-hidden="true">&raquo;</span>
                             </a>

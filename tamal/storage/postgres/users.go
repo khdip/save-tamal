@@ -109,7 +109,7 @@ func (s *Storage) ListUser(ctx context.Context, f storage.Filter) ([]storage.Use
 	order := "DESC"
 	sortBy := "created_at"
 
-	if f.SortBy != "" {
+	if f.Order != "" {
 		order = f.Order
 	}
 	if f.SortBy != "" {
