@@ -31,7 +31,8 @@ cd tamal
 go run migrations/migrate.go up
 ```
 To run the server:
-```go run tamal/main.go
+```
+go run tamal/main.go
 ```
 To run the cms:
 ```
