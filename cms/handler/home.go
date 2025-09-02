@@ -8,10 +8,12 @@ import (
 )
 
 type HomeTemplateData struct {
-	List       []Collection
-	Paginator  paginator.Paginator
-	FilterData Filter
-	URLs       map[string]string
+	List            []Collection
+	Paginator       paginator.Paginator
+	FilterData      Filter
+	TargetAmount    int32
+	CollectedAmount int32
+	URLs            map[string]string
 }
 
 func (h *Handler) homeHandler(w http.ResponseWriter, r *http.Request) {
@@ -75,9 +77,11 @@ func (h *Handler) homeHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := HomeTemplateData{
-		List:       collList,
-		FilterData: *filterData,
-		URLs:       listOfURLs(),
+		List:            collList,
+		FilterData:      *filterData,
+		URLs:            listOfURLs(),
+		TargetAmount:    targetamount,
+		CollectedAmount: collstat.Stats.TotalAmount,
 	}
 	if len(collList) > 0 {
 		data.Paginator = paginator.NewPaginator(int32(filterData.CurrentPage), limitPerPage, collstat.Stats.Count, r)
