@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="/assets/css/style.css" rel="stylesheet" type="text/css">
-    <title>Comments</title>
+    <title>Daily Report List</title>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-success">
@@ -26,10 +26,10 @@
                         <a class="nav-link" href="{{.URLs.userList}}">Users</a>
                     </li>
                     <li class="nav-item mx-lg-2">
-                        <a class="nav-link active" href="{{.URLs.commList}}">Comments</a>
+                        <a class="nav-link" href="{{.URLs.commList}}">Comments</a>
                     </li>
                     <li class="nav-item mx-lg-2">
-                        <a class="nav-link" href="{{.URLs.dreList}}">Daily Report</a>
+                        <a class="nav-link active" href="{{.URLs.dreList}}">Daily Report</a>
                     </li>
                     <li class="nav-item mx-lg-2">
                         <a class="nav-link" href="{{.URLs.home}}">Homepage</a>
@@ -39,7 +39,7 @@
         </div>
     </nav> 
     <div class="container-fluid">
-        <h2 class="p-2 text-center">Comment List</h2>
+        <h2 class="p-2 text-center">Daily Report List</h2>
         <div class="row p-2 justify-content-between">
             <!-- <div class="col-md-3">
                 <form action="/collection/sort" method="GET">
@@ -73,6 +73,9 @@
                     </div>
                 </form>
             </div> -->
+            <div class="col-md-2">
+                <a class="btn btn-success" href="{{.URLs.dreCreate}}">+ Add An Entry</a>
+            </div>
         </div>
         <div class="row p-3">
             <div class="col">
@@ -81,21 +84,43 @@
                         <thead>
                             <tr>
                                 <th>Serial</th>
-                                <th>Name</th>
-                                <th>Email</th>
+                                <th>Date</th>
+                                <th>Amount</th>
+                                <th>Currency</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             {{range .List}}
                             <tr>
-                                <td>{{.CommentID}}</td>
-                                <td>{{.Name}}</td>
-                                <td>{{.Email}}</td>
+                                <td>{{.ReportID}}</td>
+                                <td>{{.Date}}</td>
+                                <td>{{.Amount}}</td>
+                                <td>{{.Currency}}</td>
                                 <td>
-                                    <a class="btn btn-info btn-sm" href="/comments/view/{{.CommentID}}">View</a>
+                                    <a class="btn btn-info btn-sm" href="/daily_report/view/{{.ReportID}}">View</a>
+                                    <a class="btn btn-warning btn-sm" href="/daily_report/edit/{{.ReportID}}">Edit</a>
+                                    <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#dreModal{{.ReportID}}">Delete</button>
                                 </td>
                             </tr>
+                            <!-- Modal -->
+                            <div class="modal fade" id="dreModal{{.ReportID}}" tabindex="-1" aria-labelledby="dreModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="collModalLabel">Delete daily report entry?</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Are you sure to delete the daily report entry?</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <a href="/daily_report/delete/{{.ReportID}}" class="btn btn-danger">Delete</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             {{end}}
                         </tbody>
                     </table>

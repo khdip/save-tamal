@@ -5,6 +5,8 @@ import (
 	"net/http"
 	"net/url"
 	"strconv"
+
+	"golang.org/x/text/message"
 )
 
 const (
@@ -26,6 +28,11 @@ type Filter struct {
 func hideDigits(s string) string {
 	modifiedStr := s[:len(s)-4]
 	return modifiedStr + "****"
+}
+
+func formatWithCommas(number int32) string {
+	p := message.NewPrinter(message.MatchLanguage("en"))
+	return p.Sprintf("%d", number)
 }
 
 func GetFilterData(r *http.Request) *Filter {

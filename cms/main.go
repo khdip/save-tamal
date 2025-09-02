@@ -19,6 +19,7 @@ import (
 
 	collgrpc "save-tamal/proto/collection"
 	commgrpc "save-tamal/proto/comments"
+	dregrpc "save-tamal/proto/dailyReport"
 	usergrpc "save-tamal/proto/users"
 )
 
@@ -59,7 +60,8 @@ func main() {
 	uc := usergrpc.NewUserServiceClient(conn)
 	cc := collgrpc.NewCollectionServiceClient(conn)
 	cmc := commgrpc.NewCommentServiceClient(conn)
-	r := handler.GetHandler(decoder, store, asst, uc, cc, cmc)
+	drc := dregrpc.NewDailyReportServiceClient(conn)
+	r := handler.GetHandler(decoder, store, asst, uc, cc, cmc, drc)
 
 	host, port := config.GetString("server.host"), config.GetString("server.port")
 	log.Println("Server  starting...")

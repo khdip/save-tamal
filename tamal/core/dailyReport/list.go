@@ -1,4 +1,4 @@
-package collection
+package dailyreport
 
 import (
 	"context"
@@ -8,11 +8,11 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (s *CoreSvc) UpdateCollection(ctx context.Context, coll storage.Collection) (*storage.Collection, error) {
-	c, err := s.st.UpdateCollection(ctx, coll)
+func (s *CoreSvc) ListDailyReport(ctx context.Context, filter storage.Filter) ([]storage.DailyReport, error) {
+	lst, err := s.st.ListDailyReport(ctx, filter)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "processing failed")
 	}
 
-	return c, nil
+	return lst, nil
 }

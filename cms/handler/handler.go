@@ -12,6 +12,7 @@ import (
 
 	collgrpc "save-tamal/proto/collection"
 	commgrpc "save-tamal/proto/comments"
+	dregrpc "save-tamal/proto/dailyReport"
 	usergrpc "save-tamal/proto/users"
 )
 
@@ -24,9 +25,10 @@ type Handler struct {
 	uc        usergrpc.UserServiceClient
 	cc        collgrpc.CollectionServiceClient
 	cmc       commgrpc.CommentServiceClient
+	drc       dregrpc.DailyReportServiceClient
 }
 
-func GetHandler(decoder *schema.Decoder, session *sessions.CookieStore, assets fs.FS, uc usergrpc.UserServiceClient, cc collgrpc.CollectionServiceClient, cmc commgrpc.CommentServiceClient) *mux.Router {
+func GetHandler(decoder *schema.Decoder, session *sessions.CookieStore, assets fs.FS, uc usergrpc.UserServiceClient, cc collgrpc.CollectionServiceClient, cmc commgrpc.CommentServiceClient, drc dregrpc.DailyReportServiceClient) *mux.Router {
 	hand := &Handler{
 		decoder: decoder,
 		session: session,
@@ -35,6 +37,7 @@ func GetHandler(decoder *schema.Decoder, session *sessions.CookieStore, assets f
 		uc:      uc,
 		cc:      cc,
 		cmc:     cmc,
+		drc:     drc,
 	}
 	hand.GetTemplate()
 
@@ -65,6 +68,13 @@ func GetHandler(decoder *schema.Decoder, session *sessions.CookieStore, assets f
 	s.HandleFunc(collectionDeletePath, hand.deleteCollection)
 	s.HandleFunc(commentListPath, hand.listComment)
 	s.HandleFunc(commentViewPath, hand.viewComment)
+	s.HandleFunc(dailyReportCreatePath, hand.createDailyReport)
+	s.HandleFunc(dailyReportStorePath, hand.storeDailyReport)
+	s.HandleFunc(dailyReportEditPath, hand.editDailyReport)
+	s.HandleFunc(dailyReportUpdatePath, hand.updateDailyReport)
+	s.HandleFunc(dailyReportListPath, hand.listDailyReport)
+	s.HandleFunc(dailyReportViewPath, hand.viewDailyReport)
+	s.HandleFunc(dailyReportDeletePath, hand.deleteDailyReport)
 	s.Use(hand.authMiddleware)
 
 	r.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", http.FileServer(http.FS(hand.assetFS))))
@@ -94,6 +104,10 @@ func (h *Handler) GetTemplate() {
 		"cms/assets/templates/collection/coll-create.html",
 		"cms/assets/templates/collection/coll-edit.html",
 		"cms/assets/templates/collection/coll-view.html",
+		"cms/assets/templates/dailyReport/dre-list.html",
+		"cms/assets/templates/dailyReport/dre-create.html",
+		"cms/assets/templates/dailyReport/dre-edit.html",
+		"cms/assets/templates/dailyReport/dre-view.html",
 		"cms/assets/templates/comments/comm-list.html",
 		"cms/assets/templates/comments/comm-view.html",
 		"cms/assets/templates/404.html",

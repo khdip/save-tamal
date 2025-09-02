@@ -2,17 +2,21 @@ package handler
 
 import (
 	"log"
+	"math"
 	"net/http"
 	"save-tamal/cms/paginator"
 	collgrpc "save-tamal/proto/collection"
+	dregrpc "save-tamal/proto/dailyReport"
 )
 
 type HomeTemplateData struct {
 	List            []Collection
 	Paginator       paginator.Paginator
 	FilterData      Filter
-	TargetAmount    int32
-	CollectedAmount int32
+	TargetAmount    string
+	CollectedAmount string
+	RemainingAmount string
+	Percentage      int32
 	URLs            map[string]string
 }
 
@@ -76,12 +80,33 @@ func (h *Handler) homeHandler(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, notFoundPath, http.StatusSeeOther)
 	}
 
+	drstat, err := h.drc.DailyReportStats(r.Context(), &dregrpc.DailyReportStatsRequest{
+		Filter: &dregrpc.Filter{
+			Offset:     filterData.Offset,
+			Limit:      limitPerPage,
+			SortBy:     filterData.SortBy,
+			Order:      filterData.Order,
+			SearchTerm: filterData.SearchTerm,
+		},
+	})
+	if err != nil {
+		log.Println("unable to get stats: ", err)
+		http.Redirect(w, r, notFoundPath, http.StatusSeeOther)
+	}
+
+	totalCollection := drstat.Stats.TotalAmount
+	if totalCollection > targetamount {
+		totalCollection = targetamount
+	}
+
 	data := HomeTemplateData{
 		List:            collList,
 		FilterData:      *filterData,
 		URLs:            listOfURLs(),
-		TargetAmount:    targetamount,
-		CollectedAmount: collstat.Stats.TotalAmount,
+		TargetAmount:    formatWithCommas(targetamount),
+		CollectedAmount: formatWithCommas(totalCollection),
+		RemainingAmount: formatWithCommas(targetamount - totalCollection),
+		Percentage:      int32(math.Round((float64(totalCollection) / float64(targetamount)) * 100)),
 	}
 	if len(collList) > 0 {
 		data.Paginator = paginator.NewPaginator(int32(filterData.CurrentPage), limitPerPage, collstat.Stats.Count, r)

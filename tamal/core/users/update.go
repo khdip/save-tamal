@@ -14,14 +14,5 @@ func (s *CoreSvc) UpdateUser(ctx context.Context, user storage.User) (*storage.U
 		return nil, status.Error(codes.Internal, "processing failed")
 	}
 
-	return &storage.User{
-		UserID:   u.UserID,
-		Name:     u.Name,
-		Batch:    u.Batch,
-		Email:    u.Email,
-		Password: u.Password,
-		CRUDTimeDate: storage.CRUDTimeDate{
-			UpdatedBy: u.UpdatedBy,
-		},
-	}, nil
+	return u, nil
 }

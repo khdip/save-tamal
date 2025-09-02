@@ -17,6 +17,10 @@ import (
 	commcore "save-tamal/tamal/core/comments"
 	commsvc "save-tamal/tamal/services/comments"
 
+	dregrpc "save-tamal/proto/dailyReport"
+	drecore "save-tamal/tamal/core/dailyReport"
+	dresvc "save-tamal/tamal/services/DailyReport"
+
 	"save-tamal/tamal/storage/postgres"
 	"strconv"
 	"strings"
@@ -55,6 +59,10 @@ func main() {
 	commC := commcore.New(store)
 	commS := commsvc.New(commC)
 	commgrpc.RegisterCommentServiceServer(grpcServer, commS)
+
+	dreC := drecore.New(store)
+	dreS := dresvc.New(dreC)
+	dregrpc.RegisterDailyReportServiceServer(grpcServer, dreS)
 
 	host, port := config.GetString("server.host"), config.GetString("server.port")
 	lis, err := net.Listen("tcp", fmt.Sprintf("%s:%s", host, port))

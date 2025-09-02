@@ -25,6 +25,14 @@ type Collection struct {
 	CRUDTimeDate
 }
 
+type DailyReport struct {
+	ReportID int32  `db:"report_id"`
+	Date     string `db:"date"`
+	Amount   int32  `db:"amount"`
+	Currency string `db:"currency"`
+	CRUDTimeDate
+}
+
 type Comment struct {
 	CommentID int32     `db:"comment_id"`
 	Name      string    `db:"name"`

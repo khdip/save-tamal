@@ -3,7 +3,7 @@ package handler
 import (
 	"log"
 	"net/http"
-	collgrpc "save-tamal/proto/collection"
+	dregrpc "save-tamal/proto/dailyReport"
 )
 
 type DashBoardData struct {
@@ -21,8 +21,8 @@ func (h *Handler) viewDashboard(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	collstat, err := h.cc.CollectionStats(r.Context(), &collgrpc.CollectionStatsRequest{
-		Filter: &collgrpc.Filter{},
+	drstat, err := h.drc.DailyReportStats(r.Context(), &dregrpc.DailyReportStatsRequest{
+		Filter: &dregrpc.Filter{},
 	})
 	if err != nil {
 		log.Println("unable to get stats: ", err)
@@ -31,8 +31,8 @@ func (h *Handler) viewDashboard(w http.ResponseWriter, r *http.Request) {
 
 	data := DashBoardData{
 		TargetAmount:    targetamount,
-		CollectedAmount: collstat.Stats.TotalAmount,
-		RemainingAmount: targetamount - collstat.Stats.TotalAmount,
+		CollectedAmount: drstat.Stats.TotalAmount,
+		RemainingAmount: targetamount - drstat.Stats.TotalAmount,
 		URLs:            listOfURLs(),
 	}
 

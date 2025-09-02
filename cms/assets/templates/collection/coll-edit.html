@@ -29,6 +29,9 @@
                         <a class="nav-link" href="{{.URLs.commList}}">Comments</a>
                     </li>
                     <li class="nav-item mx-lg-2">
+                        <a class="nav-link" href="{{.URLs.dreList}}">Daily Report</a>
+                    </li>
+                    <li class="nav-item mx-lg-2">
                         <a class="nav-link" href="{{.URLs.home}}">Homepage</a>
                     </li>
                 </ul>
@@ -70,11 +73,11 @@
                      <div class="mb-3">
                         <label class="form-label">Currency</label>
                         <select class="form-select" name="Currency">
-                            <option {{if eq .Coll.AccountType "BDT"}}selected {{end}} value="BDT">BDT</option>
-                            <option {{if eq .Coll.AccountType "AUD"}}selected {{end}} value="AUD">AUD</option>
-                            <option {{if eq .Coll.AccountType "USD"}}selected {{end}} value="USD">USD</option>
-                            <option {{if eq .Coll.AccountType "EURO"}}selected {{end}} value="EURO">EURO</option>
-                            <option {{if eq .Coll.AccountType "POUND"}}selected {{end}} value="POUND">POUND</option>
+                            <option {{if eq .Coll.Currency "BDT"}}selected {{end}} value="BDT">BDT</option>
+                            <option {{if eq .Coll.Currency "AUD"}}selected {{end}} value="AUD">AUD</option>
+                            <option {{if eq .Coll.Currency "USD"}}selected {{end}} value="USD">USD</option>
+                            <option {{if eq .Coll.Currency "EURO"}}selected {{end}} value="EURO">EURO</option>
+                            <option {{if eq .Coll.Currency "POUND"}}selected {{end}} value="POUND">POUND</option>
                         </select>
                     </div>
                     <a class="btn btn-primary" href="{{.URLs.collList}}">Back to List</a>
