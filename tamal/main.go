@@ -19,7 +19,7 @@ import (
 
 	dregrpc "save-tamal/proto/dailyReport"
 	drecore "save-tamal/tamal/core/dailyReport"
-	dresvc "save-tamal/tamal/services/DailyReport"
+	dresvc "save-tamal/tamal/services/dailyReport"
 
 	"save-tamal/tamal/storage/postgres"
 	"strconv"
