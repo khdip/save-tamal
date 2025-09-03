@@ -1,8 +1,8 @@
 package handler
 
 import (
+	"fmt"
 	"log"
-	"math"
 	"net/http"
 	"save-tamal/cms/paginator"
 	collgrpc "save-tamal/proto/collection"
@@ -16,7 +16,7 @@ type HomeTemplateData struct {
 	TargetAmount    string
 	CollectedAmount string
 	RemainingAmount string
-	Percentage      int32
+	Percentage      string
 	URLs            map[string]string
 }
 
@@ -106,7 +106,7 @@ func (h *Handler) homeHandler(w http.ResponseWriter, r *http.Request) {
 		TargetAmount:    formatWithCommas(targetamount),
 		CollectedAmount: formatWithCommas(totalCollection),
 		RemainingAmount: formatWithCommas(targetamount - totalCollection),
-		Percentage:      int32(math.Round((float64(totalCollection) / float64(targetamount)) * 100)),
+		Percentage:      fmt.Sprintf("%.2f", ((float64(totalCollection) / float64(targetamount)) * 100)),
 	}
 	if len(collList) > 0 {
 		data.Paginator = paginator.NewPaginator(int32(filterData.CurrentPage), limitPerPage, collstat.Stats.Count, r)
